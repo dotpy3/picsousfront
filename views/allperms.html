@@ -1,0 +1,34 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="page-header">
+			<h1>Perms</h1>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<table ng-show="loaded" class="table table-striped">
+			<thead>
+				<tr>
+					<th>Nom</th>
+					<th>Date</th>
+					<th>Période</th>
+					<th>Type</th>
+					<th>Responsable</th>
+					<th>Rôle</th>
+					<th>Tel. resp</th>
+				</tr>
+			</thead>
+			<tr ng-repeat="perm in perms | orderBy:'date':true">
+				<td><a href="#/perm/{{perm.id}}">{{ perm.nom }}</a></td>
+				<td>{{ perm.date | date }}</td>
+				<td>{{ perm.periode === 'S' ? 'Soir' : (perm.periode === 'M' ? 'Matin' : 'Déjeuner') }}</td>
+				<td>{{ perm.asso ? 'Association' : 'Groupe de potes' }}</td>
+				<td><a href="mailto:{{perm.mail_resp}}">{{ perm.nom_resp }}</a></td>
+				<td>{{ perm.asso ? perm.role : '--' }}</td>
+				<td>{{ perm.tel_resp }}</td>
+			</tr>
+		</table>
+		<p ng-hide="loaded">Chargement en cours...</p>
+	</div>
+</div>

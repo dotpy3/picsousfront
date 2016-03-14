@@ -1,0 +1,77 @@
+'use strict';
+
+angular.module('picsousApp', [
+	'ngRoute',
+	'ngTable',
+	'ui.bootstrap',
+	]).config(function($routeProvider, $httpProvider) {
+		var connectionCheck = function(casConnectionCheck) {
+			casConnectionCheck.check();
+		};
+
+		$routeProvider.when('/', {
+			templateUrl: 'views/home.html',
+			controller: 'HomeCtrl',
+			reloadOnSearch: false,
+			resolve: {
+				resolveUser: connectionCheck
+			},
+		}).when('/addperm', {
+			templateUrl: 'views/addperm.html',
+			controller: 'AddPermCtrl',
+			reloadOnSearch: false,
+			resolve: {
+				resolveUser: connectionCheck
+			},
+		}).when('/allperms', {
+			templateUrl: 'views/allperms.html',
+			controller: 'AllPermsCtrl',
+			reloadOnSearch: false,
+			resolve: {
+				resolveUser: connectionCheck
+			},
+		}).when('/perm/:id', {
+			templateUrl: 'views/perm.html',
+			controller: 'PermCtrl',
+			reloadOnSearch: false,
+		}).when('/facturesemises', {
+			templateUrl: 'views/facturesemises.html',
+			controller: 'FacturesEmisesCtrl',
+			reloadOnSearch: false,
+		}).when('/factureemise/:id', {
+			templateUrl: 'views/factureemise.html',
+			controller: 'FactureEmiseCtrl',
+			reloadOnSearch: false,
+		}).when('/facturesrecues', {
+			templateUrl: 'views/facturesrecues.html',
+			controller: 'FacturesRecuesCtrl',
+			reloadOnSearch: false,
+		}).when('/facturesrecues/:id', {
+			templateUrl: 'views/facturerecue.html',
+			controller: 'FactureRecueCtrl',
+			reloadOnSearch: false,
+		}).when('/analyse', {
+			templateUrl: 'views/vatanalysis.html',
+			controller: 'VATAnalysisCtrl',
+			reloadOnSearch: false,
+		}).when('/cheques', {
+			templateUrl: 'views/cheques.html',
+			controller: 'ChequesCtrl',
+			reloadOnSearch: false,
+		}).otherwise({
+			redirectTo: '/'
+		});
+
+		$httpProvider.interceptors.push(function($q, message) {
+			return {
+				responseError: function(response) {
+					if (response.data){
+						message.error((response.data.error ? (response.data.error.message || response.data.error.code) : false) || 'Une erreur est survenue.');
+					} else {
+						message.error('Impossible de se connecter au serveur.');
+					}
+					return $q.reject(response);
+				}
+			}
+		});
+	});

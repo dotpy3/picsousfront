@@ -1,0 +1,68 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="page-header">
+			<h1>Ajout de perm</h1>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<p>Ajoutez une perm pour pouvoir y associer des factures reçues et des chèques, ainsi que pour pouvoir créer des articles qui seront associés à la perm.</p>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<form>
+			<div class="row">
+				<div class="form-group col-md-4">
+					<label>Nom de la perm</label>
+					<input type="text" class="form-control" ng-model="perm.nom" placeholder="Association Perm" />
+				</div>
+				<div class="form-group col-md-4">
+					<label>Date de la perm</label>
+					<p class="input-group">
+						<input type="text" class="form-control" uib-datepicker-popup datepicker-options="dateOptions" close-text="Fermer" is-open="popupOpen" ng-required="true" ng-model="perm.date" placeholder="AAAA-MM-JJ" />
+						<span class="input-group-btn">
+	            			<button type="button" class="btn btn-default" ng-click="openPopup()"><i class="glyphicon glyphicon-calendar"></i></button>
+	          			</span>
+					</p>
+				</div>
+				<div class="form-group col-md-4">
+					<label>Période de la perm</label>
+					<select ng-model="perm.periode" class="form-control">
+						<option value="M">Matin</option>
+						<option value="D">Déjeuner</option>
+						<option value="S">Soir</option>
+					</select>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-md-4">
+					<label>Nom du responsable</label>
+					<input type="text" class="form-control" ng-model="perm.nom_resp" uib-typeahead="address.name for address in typeahead($viewValue)" placeholder="Prénom NOM" />
+				</div>
+				<div class="form-group col-md-4">
+					<label>Téléphone du responsable</label>
+					<input type="text" class="form-control" ng-model="perm.tel_resp" placeholder="06 12 34 56 78" />
+				</div>
+				<div class="form-group col-md-4">
+					<label>Mail du responsable</label>
+					<input type="text" class="form-control" ng-model="perm.mail_resp" placeholder="login@etu.utc.fr" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label>
+					<input ng-model="perm.asso" ng-init="perm.asso = false" type="checkbox" />
+					Association
+				</label>
+			</div>
+			<div class="form-group col-md-4" ng-show="perm.asso">
+				<label>Rôle du responsable</label>
+				<input type="text" class="form-control" ng-model="perm.role" placeholder="Responsable Perm" />
+			</div>
+		</form>
+	</div>
+	<div class="col-md-12">
+		<button type="submit" ng-click="addPerm()" ng-disabled="adding" class="btn btn-primary">Ajouter</button>
+	</div>
+</div>
