@@ -12,3 +12,7 @@ Interface de gestion de la trésorerie pour le Pic'Asso, foyer étudiant de l'Un
 * Filtrer les factures en fonction de l'état
 * Pouvoir récupérer les perms où il n'y a pas de facture associée (pour pouvoir relancer les responsables de perm)
 * Améliorer la sécu parce que là actuellement c'est une cage à pigeons
+* Par défaut : valeur de la date de la perm : aujourd'hui.
+* Dashboard d'analytics : p.e., sur une période, pouvoir voir les ventes des items des perms, etc.
+* Ajouter un attribute "_blank" pour que les conventions + facture + justificatifs s'affichent dans des nouvelles fenetres
+* Supprimer le "+" d'ajout de catégories pour ceux qui n'ont pas les droits.

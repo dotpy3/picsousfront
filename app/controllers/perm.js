@@ -20,6 +20,32 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, $http
 
 	var oldPerm;
 
+	$scope.sendConvention = function() {
+		loadingSpin.start();
+		$http({
+			method: 'POST',
+			url: APP_URL + '/sendconvention/' + $scope.perm.id,
+		}).then(function() {
+			loadingSpin.end();
+			message.success('Convention envoyée !');
+		}, function() {
+			loadingSpin.end();
+		});
+	};
+
+	$scope.sendJustificatif = function() {
+		loadingSpin.start();
+		$http({
+			method: 'POST',
+			url: APP_URL + '/sendjustificatif/' + $scope.perm.id,
+		}).then(function() {
+			loadingSpin.end();
+			message.success('Justificatif envoyé !');
+		}, function() {
+			loadingSpin.end();
+		});
+	};
+
 	$scope.modifyPerm = function() {
 		$scope.modifyingPerm = true;
 		oldPerm = angular.copy($scope.perm);
@@ -127,7 +153,8 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, $http
 			loadingSpin.end();
 			$scope.createArticle = false;
 			$scope.newArticle.id = response.data.id;
-			$scope.perm.article_set.push($scope.newArticle);
+			$scope.perm.article_set.push(angular.copy($scope.newArticle));
+			$scope.newArticle = {};
 			message.success('Article ' + $scope.newArticle.nom + ' bien ajouté à Picsous !');
 		}, function() {
 			loadingSpin.end();

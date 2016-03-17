@@ -34,7 +34,6 @@ angular.module('picsousApp').controller('VATAnalysisCtrl', function($http, APP_U
 		formatYear: 'yy',
 		maxDate: new Date(2020, 5, 22),
 		minDate: new Date(),
-		startingDay: 1
 	};
 
 	$scope.analysis = function(period) {
