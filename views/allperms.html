@@ -7,6 +7,14 @@
 </div>
 <div class="row">
 	<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-12">
+				<p class="input-group">
+					<span class="input-group-addon">Recherche</span>
+					<input type="text" class="form-control" ng-model="filters.searchField" />
+				</p>
+			</p>
+		</div>
 		<table ng-show="loaded" class="table table-striped">
 			<thead>
 				<tr>
@@ -19,7 +27,7 @@
 					<th>Tel. resp</th>
 				</tr>
 			</thead>
-			<tr ng-repeat="perm in perms | orderBy:'date':true">
+			<tr ng-repeat="perm in perms | orderBy:'date':true | filter:filters.searchField">
 				<td><a href="#/perm/{{perm.id}}">{{ perm.nom }}</a></td>
 				<td>{{ perm.date | date }}</td>
 				<td>{{ perm.periode === 'S' ? 'Soir' : (perm.periode === 'M' ? 'Matin' : 'Déjeuner') }}</td>
