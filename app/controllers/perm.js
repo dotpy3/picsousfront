@@ -1,4 +1,4 @@
-angular.module('picsousApp').controller('PermCtrl', function($routeParams, $http, APP_URL, $scope, message, loadingSpin) {
+angular.module('picsousApp').controller('PermCtrl', function($routeParams, casConnectionCheck, $http, APP_URL, $scope, message, loadingSpin) {
 	$scope.app_url = APP_URL;
 	$scope.categories = [];
 
@@ -16,6 +16,10 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, $http
 
 	$scope.newArticle = {
 		tva: 5.5
+	};
+
+	$scope.isAdmin = function() {
+		return casConnectionCheck.isAdmin();
 	};
 
 	var oldPerm;

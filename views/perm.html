@@ -50,11 +50,11 @@
 </div>
 <div class="row">
 	<div class="col-sm-6" style="margin-top:10px;">
-		<a href="{{ app_url + '/convention/' + perm.id }}" class="btn btn-block btn-lg btn-primary">Afficher convention</a>
+		<a href="{{ app_url + '/convention/' + perm.id }}" class="btn btn-block btn-lg btn-primary" target="_blank">Afficher convention</a>
 		<a href="" ng-click="sendConvention()" class="btn btn-block btn-success">Envoyer convention par mail</a>
 	</div>
 	<div class="col-sm-6" style="margin-top:10px;">
-		<a href="{{ app_url + '/justificatif/' + perm.id }}" class="btn btn-block btn-lg btn-primary">Afficher justificatif de paiement</a>
+		<a href="{{ app_url + '/justificatif/' + perm.id }}" class="btn btn-block btn-lg btn-primary" target="_blank">Afficher justificatif de paiement</a>
 		<a href="" ng-click="sendJustificatif()" class="btn btn-block btn-success">Envoyer justificatif par mail</a>
 	</div>
 </div>
@@ -105,7 +105,7 @@
 							<input type="text" class="form-control" placeholder="AAAA-MM-JJ" ng-model="newFacture.date_remboursement" />
 						</div>
 						<div class="form-group col-md-3">
-							<label>Catégorie (<a href="#/facturesrecues">+</a>)</label>
+							<label>Catégorie <span ng-show="isAdmin()">(<a href="#/facturesrecues">+</a>)</span></label>
 							<select class="form-control" ng-model="newFacture.categorie" ng-options="category.id as category.nom for category in categories">
 							</select>
 						</div>

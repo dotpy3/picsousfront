@@ -1,4 +1,5 @@
 angular.module('picsousApp').controller('AddPermCtrl', function($scope, APP_URL, message, $http, $location, loadingSpin){
+
 	$scope.addPerm = function() {
 		$scope.adding = true;
 		loadingSpin.start();

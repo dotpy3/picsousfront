@@ -1,10 +1,11 @@
-angular.module('picsousApp').controller('VATAnalysisCtrl', function($http, APP_URL, $scope, loadingSpin) {
+angular.module('picsousApp').controller('VATAnalysisCtrl', function($http, APP_URL, $scope, dateWrapper, message, loadingSpin) {
 	$http({
 		method: 'GET',
 		url: APP_URL + '/periodetva/'
 	}).then(function(response) {
 		$scope.periods = response.data;
 	});
+	$scope.newPeriod = {};
 
 	$scope.state = function(state) {
 		if (state === 'N') return 'Non déclarée';
@@ -16,6 +17,22 @@ angular.module('picsousApp').controller('VATAnalysisCtrl', function($http, APP_U
 		if (state === 'N') return 'label-danger';
 		if (state === 'D') return 'label-primary';
 		return 'label-default'
+	};
+
+	$scope.addPeriod = function() {
+		var period = angular.copy($scope.newPeriod);
+		period.debut = dateWrapper.DateToStringDate(period.debut);
+		period.fin = dateWrapper.DateToStringDate(period.fin);
+		$http({
+			method: 'POST',
+			url: APP_URL + '/periodetva/',
+			data: period,
+		}).then(function(response) {
+			message.success('Période bien ajoutée !');
+			$scope.periods.push(response.data);
+			$scope.addingVatPeriod = false;
+		}, function() {
+		});
 	};
 
 	$scope.popupOpen1 = false;
@@ -37,6 +54,7 @@ angular.module('picsousApp').controller('VATAnalysisCtrl', function($http, APP_U
 	};
 
 	$scope.analysis = function(period) {
+		$scope.analysisResult = null;
 		$scope.analysisUndergoing = true;
 		$http({
 			method: 'GET',
