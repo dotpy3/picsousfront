@@ -18,6 +18,7 @@
 					<th ng-show="modifyingPerm">Mail</th>
 					<th>Rôle</th>
 					<th>Tel. resp</th>
+					<th ng-if="!modifyingPerm">État</th><th ng-if="modifyingPerm">Traitée</th>
 				</tr>
 			</thead>
 			<tr ng-if="!modifyingPerm">
@@ -28,6 +29,7 @@
 				<td><a href="mailto:{{perm.mail_resp}}">{{ perm.nom_resp }}</a></td>
 				<td>{{ perm.asso ? perm.role : '--' }}</td>
 				<td>{{ perm.tel_resp }}</td>
+				<td><span ng-class="stateLabel(perm.state)" class="label">{{ stateString(perm.state) }}</span></td>
 			</tr>
 			<tr ng-if="modifyingPerm">
 				<td><input type="text" class="form-control" ng-model="perm.nom" /></td>
@@ -44,6 +46,7 @@
 				<td><input type="text" class="form-control" ng-model="perm.mail_resp" /></td>
 				<td><input type="text" ng-show="perm.asso" class="form-control" ng-model="perm.role" /><span ng-hide="perm.asso">--</span></td>
 				<td><input type="text" class="form-control" ng-model="perm.tel_resp" /></td>
+				<td><input type="checkbox" ng-model="perm.traitee" /></td>
 			</tr>
 		</table>
 	</div>

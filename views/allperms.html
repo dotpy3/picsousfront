@@ -15,6 +15,23 @@
 				</p>
 			</p>
 		</div>
+		<div class="row">
+			<div class="col-md-2 col-sm-4">
+				<div class="checkbox">
+					<label><input type="checkbox" ng-model="filters.traite" /> Perms traitées</label>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-4">
+				<div class="checkbox">
+					<label><input type="checkbox" ng-model="filters.nontraite" /> Perms non traitées</label>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-4">
+				<div class="checkbox">
+					<label><input type="checkbox" ng-model="filters.sansfacture" /> Perms sans facture</label>
+				</div>
+			</div>
+		</div>
 		<table ng-show="loaded" class="table table-striped">
 			<thead>
 				<tr>
@@ -25,9 +42,10 @@
 					<th>Responsable</th>
 					<th>Rôle</th>
 					<th>Tel. resp</th>
+					<th>État</th>
 				</tr>
 			</thead>
-			<tr ng-repeat="perm in perms | orderBy:'date':true | filter:filters.searchField">
+			<tr ng-repeat="perm in getPerms(filters) | orderBy:'date':true | filter:filters.searchField">
 				<td><a href="#/perm/{{perm.id}}">{{ perm.nom }}</a></td>
 				<td>{{ perm.date | date }}</td>
 				<td>{{ perm.periode === 'S' ? 'Soir' : (perm.periode === 'M' ? 'Matin' : 'Déjeuner') }}</td>
@@ -35,6 +53,7 @@
 				<td><a href="mailto:{{perm.mail_resp}}">{{ perm.nom_resp }}</a></td>
 				<td>{{ perm.asso ? perm.role : '--' }}</td>
 				<td>{{ perm.tel_resp }}</td>
+				<td><span class="label" ng-class="stateLabel(perm.state)">{{ stateString(perm.state) }}</span></td>
 			</tr>
 		</table>
 		<p ng-hide="loaded">Chargement en cours...</p>
