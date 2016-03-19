@@ -25,10 +25,10 @@ angular.module('picsousApp').controller('AllPermsCtrl', function($http, APP_URL,
 			if (filters.traite && p.state === 'T') {
 				return true;
 			}
-			if (filters.nontraite && (p.state === 'N' || p.state === 'V')) {
+			if (filters.nontraite && p.state === 'N') {
 				return true;
 			}
-			if (filters.sansfacture && p.facturerecue_set.length === 0) {
+			if (filters.sansfacture && p.state === 'V') {
 				return true;
 			}
 			if (!filters.traite && !filters.nontraite && !filters.sansfacture) {
