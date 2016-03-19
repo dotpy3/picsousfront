@@ -2,6 +2,30 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 	$scope.app_url = APP_URL;
 	$scope.categories = [];
 
+	$scope.getState = function(p) {
+		if (p.state === 'T') {
+			return 'T';
+		}
+		if (p.facturerecue_set.length === 0) {
+			return 'V';
+		}
+		return 'N';
+	};
+
+	$scope.stateLabel = function(state) {
+		if (state === 'T') return 'label-success';
+		if (state === 'V') return 'label-warning';
+		if (state === 'N') return 'label-danger';
+		return 'label-default';
+	};
+
+	$scope.stateString = function(state) {
+		if (state === 'T') return 'Traitée';
+		if (state === 'V') return 'Manque facture(s)';
+		if (state === 'N') return 'Non traitée';
+		return state;
+	};
+
 	loadingSpin.start();
 	$http({
 		method: 'GET',
@@ -9,6 +33,7 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 	}).then(function(response) {
 		$scope.perm = response.data;
 		$scope.newArticle.perm = $scope.perm.id;
+		$scope.perm.state = $scope.getState($scope.perm);
 		loadingSpin.end();
 	}, function() {
 		loadingSpin.end();
@@ -52,16 +77,31 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 
 	$scope.modifyPerm = function() {
 		$scope.modifyingPerm = true;
+		if ($scope.perm.state === 'T') {
+			$scope.perm.traitee = true;
+		} else {
+			$scope.perm.traitee = false;
+		}
 		oldPerm = angular.copy($scope.perm);
 	};
 
 	$scope.savePerm = function() {
+		if ($scope.perm.traitee) {
+			$scope.perm.state = 'T';
+		} else {
+			$scope.perm.state = 'N';
+		}
+		var sendPerm = angular.copy($scope.perm);
+		delete sendPerm.article_set;
+		delete sendPerm.facturerecue_set;
+		delete sendPerm.traitee;
 		loadingSpin.start();
 		$http({
 			method: 'PUT',
 			url: APP_URL + '/perms/' + $routeParams.id + '/',
-			data: $scope.perm
+			data: sendPerm,
 		}).then(function() {
+			$scope.perm.state = $scope.getState($scope.perm);
 			$scope.modifyingPerm = false;
 			loadingSpin.end();
 			message.success('Perm bien modifiée !');
