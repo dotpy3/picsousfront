@@ -51,7 +51,7 @@
 		</table>
 	</div>
 </div>
-<div class="row">
+<div class="row" ng-show="perm.asso">
 	<div class="col-sm-6" style="margin-top:10px;">
 		<a href="{{ app_url + '/convention/' + perm.id }}" class="btn btn-block btn-lg btn-primary" target="_blank">Afficher convention</a>
 		<a href="" ng-click="sendConvention()" class="btn btn-block btn-success">Envoyer convention par mail</a>
@@ -66,7 +66,7 @@
 		<h3>Factures<button class="pull-right btn btn-primary" ng-click="addingFacture = !addingFacture"><i class="fa fa-plus"></i> Ajouter</button></h3>
 	</div>
 </div>
-<div class="row">
+<div class="row" ng-show="isAdmin()">
 	<div class="col-md-12">
 		<div class="panel panel-default" ng-show="addingFacture">
 			<div class="panel-heading">
@@ -192,7 +192,7 @@
 						</div>
 					</form>
 				</div>
-				<button ng-click="addArticle()" class="btn btn-primary pull-right btn-lg">Ajouter</button>
+				<button ng-click="addArticle()" ng-disabled="addingArticle" class="btn btn-primary pull-right btn-lg">Ajouter</button>
 			</div>
 		</div>
 	</div>
@@ -216,7 +216,7 @@
 				<td>{{ article.tva }}%</td>
 				<td>{{ article.ventes }}</td>
 				<td><button ng-click="updateArticle(article)" class="btn btn-primary btn-xs" ng-disabled="!article.id_payutc">Mettre à jour</button> <span ng-show="article.ventes_last_update">(Mis à jour le {{ article.ventes_last_update | date }})</span></td>
-				<td>{{ article.id_payutc ? 'Ajouté' : '' }}<button ng-click="addToPayutc(article)" class="btn btn-primary btn-xs" ng-hide="article.id_payutc">Ajouter à PayUTC</button></td>
+				<td>{{ article.id_payutc ? 'Ajouté' : '' }}<button ng-click="addToPayutc(article)" class="btn btn-primary btn-xs" ng-hide="article.id_payutc" ng-disabled="article.addingToPayutc">Ajouter à PayUTC</button></td>
 				<td><button class="btn btn-success btn-xs" ng-disabled="article.id_payutc">Modifier</button></td>
 			</tr>
 		</table>

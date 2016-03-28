@@ -1,4 +1,5 @@
-angular.module('picsousApp').controller('AddPermCtrl', function($scope, APP_URL, message, $http, $location, loadingSpin){
+angular.module('picsousApp').controller('AddPermCtrl', function($scope, APP_URL, message, $http, dateWrapper, $location, loadingSpin){
+	$scope.perm = {};
 
 	$scope.addPerm = function() {
 		$scope.adding = true;
@@ -37,9 +38,8 @@ angular.module('picsousApp').controller('AddPermCtrl', function($scope, APP_URL,
 	};
 
 	$scope.dateOptions = {
+		initDate: new Date(),
 		dateDisabled: false,
 		formatYear: 'yy',
-		maxDate: new Date(2020, 5, 22),
-		minDate: new Date(),
 	};
 });

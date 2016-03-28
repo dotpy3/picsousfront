@@ -114,6 +114,14 @@
 				</form>
 			</div>
 		</div>
+		<div class="row" ng-show="factures.length > 0">
+			<div class="col-md-12">
+				<p class="input-group">
+					<span class="input-group-addon">Recherche</span>
+					<input type="text" class="form-control" ng-model="searchField" />
+				</p>
+			</p>
+		</div>
 		<table class="table table-striped" ng-show="factures.length > 0">
 			<thead>
 				<tr>
@@ -129,7 +137,7 @@
 					<th>Perm</th>
 				</tr>
 			</thead>
-			<tr ng-repeat="facture in factures | orderBy:-date_paiement">
+			<tr ng-repeat="facture in factures | orderBy:-date_paiement | filter:searchField">
 				<td><a href="#/facturesrecues/{{facture.id}}">Fac. {{ getCategoryCode(facture.categorie) + facture.id }}</a></td>
 				<td>{{ facture.nom_entreprise }}</td>
 				<td>{{ facture.date | date }}</td>

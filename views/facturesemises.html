@@ -69,6 +69,14 @@
 </div>
 <div class="row">
 	<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-12">
+				<p class="input-group">
+					<span class="input-group-addon">Recherche</span>
+					<input type="text" class="form-control" ng-model="searchField" />
+				</p>
+			</p>
+		</div>
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -79,7 +87,7 @@
 					<th></th>
 				</tr>
 			</thead>
-			<tr ng-repeat="facture in factures">
+			<tr ng-repeat="facture in factures | filter:searchField">
 				<td>{{ facture.destinataire }}</td>
 				<td>{{ facture.date_creation | date }}</td>
 				<td><span class="label" ng-class="stateLabel(facture.etat)">{{ state(facture.etat) }}</span></td>

@@ -2,6 +2,10 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 	$scope.app_url = APP_URL;
 	$scope.categories = [];
 
+	$scope.isAdmin = function() {
+		return casConnectionCheck.isAdmin();
+	};
+
 	$scope.getState = function(p) {
 		if (p.state === 'T') {
 			return 'T';
@@ -160,15 +164,18 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 
 	$scope.addToPayutc = function(article) {
 		loadingSpin.start();
+		article.addingToPayutc = true;
 		$http({
 			method: 'GET',
 			url: APP_URL + '/createpayutcarticle/' + article.id,
 		}).then(function(response) {
 			loadingSpin.end();
 			article.id_payutc = response.data;
+			article.addingToPayutc = false;
 			message.success('Article bien ajouté à PayUTC !');
 		}, function() {
 			loadingSpin.end();
+			article.addingToPayutc = false;
 		});
 	};
 
@@ -189,19 +196,22 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 
 	$scope.addArticle = function() {
 		loadingSpin.start();
+		$scope.addingArticle = true;
 		$http({
 			method: 'POST',
 			url: APP_URL + '/articles/',
 			data: $scope.newArticle
 		}).then(function(response) {
+			$scope.addingArticle = false;
 			loadingSpin.end();
 			$scope.createArticle = false;
 			$scope.newArticle.id = response.data.id;
 			$scope.perm.article_set.push(angular.copy($scope.newArticle));
-			$scope.newArticle = {};
+			$scope.newArticle = { perm: $routeParams.id, tva: 5.5 };
 			message.success('Article ' + $scope.newArticle.nom + ' bien ajouté à Picsous !');
 		}, function() {
 			loadingSpin.end();
+			$scope.addingArticle = false;
 		});
 	}
 });
