@@ -5,7 +5,7 @@ angular.module('picsousApp').controller('AddPermCtrl', function($scope, APP_URL,
 		$scope.adding = true;
 		loadingSpin.start();
 		var perm = angular.copy($scope.perm);
-		perm.date = perm.date.getFullYear() + '-' + perm.date.getMonth() + '-' + perm.date.getDate();
+		perm.date = dateWrapper.DateToStringDate(perm.date);
 		$http({
 			method: 'POST',
 			data: perm,

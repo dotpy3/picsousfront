@@ -76,6 +76,9 @@ angular.module('picsousApp', [
 				},
 
 				responseError: function(response) {
+					if (response.config.url.search('autocomplete') !== -1) {
+						return;
+					}
 					if (response.data){
 						message.error((response.data.error ? (response.data.error.message || response.data.error.code) : false) || 'Une erreur est survenue.');
 					} else {

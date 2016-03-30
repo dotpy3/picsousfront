@@ -51,6 +51,14 @@ angular.module('picsousApp').factory('casConnectionCheck', function($routeParams
 		return logins.indexOf(login) !== -1;
 	};
 
+	var sendToFuck = function() {
+		$window.location.href = fuck;
+	};
+
+	var sendToCAS = function(originalUrl) {
+		$window.location.href = CAS_URL + '/login?service=' + originalUrl;
+	};
+
 	var callRights = function() {
 		return getMyRights().then(function(response) {
 			if (response.data === 'NONE') {
@@ -69,10 +77,11 @@ angular.module('picsousApp').factory('casConnectionCheck', function($routeParams
 						identity = response.data.success.login;
 						console.log(identity);
 					}, function() {
-						$window.location.href = fuck;
+						// should be sendToFuck when login properly works ...!!!!!!
+						sendToCAS(originalUrl);
 					});
 				} else {
-					$window.location.href = CAS_URL + '/login?service=' + originalUrl;
+					sendToCAS(originalUrl);
 				}
 			} else {
 				rights = response.data;
@@ -94,6 +103,10 @@ angular.module('picsousApp').factory('casConnectionCheck', function($routeParams
 
 		disconnect: function() {
 			$window.location.href = 'https://cas.utc.fr/cas/logout';
+		},
+
+		isConnected: function() {
+			return !!identity;
 		},
 
 		isAdmin: function() {
