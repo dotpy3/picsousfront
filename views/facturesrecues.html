@@ -78,21 +78,45 @@
 							<label>Moyen de paiement</label>
 							<input type="text" class="form-control" ng-model="newFacture.moyen_paiement" />
 						</div>
-						<div class="form-group col-md-3">
+						<div class="form-group col-md-2">
 							<label>Date</label>
-							<input type="text" class="form-control" placeholder="AAAA-MM-JJ" ng-model="newFacture.date" />
+							<p class="input-group">
+								<input type="text" class="form-control" uib-datepicker-popup datepicker-options="dateOptions" close-text="Fermer" is-open="popup1Open" ng-required="true" ng-model="newFacture.date" />
+								<span class="input-group-btn">
+		            				<button type="button" class="btn btn-default" ng-click="openPopup(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+		          				</span>
+		          			</p>
 						</div>
-						<div class="form-group col-md-3">
+						<div class="form-group col-md-2">
 							<label>Date de paiement</label>
-							<input type="text" class="form-control" placeholder="AAAA-MM-JJ" ng-model="newFacture.date_paiement" />
+							<p class="input-group">
+								<input type="text" class="form-control" uib-datepicker-popup datepicker-options="dateOptions" close-text="Fermer" is-open="popup2Open" ng-model="newFacture.date_paiement" />
+								<span class="input-group-btn">
+		            				<button type="button" class="btn btn-default" ng-click="openPopup(2)"><i class="glyphicon glyphicon-calendar"></i></button>
+		          				</span>
+		          			</p>
 						</div>
-						<div class="form-group col-md-3">
+						<div class="form-group col-md-2">
 							<label>Date de remboursement</label>
-							<input type="text" class="form-control" placeholder="AAAA-MM-JJ" ng-model="newFacture.date_remboursement" />
+							<p class="input-group">
+								<input type="text" class="form-control" uib-datepicker-popup datepicker-options="dateOptions" close-text="Fermer" is-open="popup3Open" ng-model="newFacture.date_remboursement" />
+								<span class="input-group-btn">
+		            				<button type="button" class="btn btn-default" ng-click="openPopup(3)"><i class="glyphicon glyphicon-calendar"></i></button>
+		          				</span>
+		          			</p>
 						</div>
 						<div class="form-group col-md-3">
 							<label>Catégorie (<a href="#/facturesrecues">+</a>)</label>
 							<select class="form-control" ng-model="newFacture.categorie" ng-options="category.id as category.nom for category in categories">
+							</select>
+						</div>
+						<div class="form-group col-md-3">
+							<label>État</label>
+							<select class="form-control" ng-model="newFacture.etat">
+								<option value="D">À payer</option>
+								<option value="R">À rembourser</option>
+								<option value="E">En attente</option>
+								<option value="P">Payée</option>
 							</select>
 						</div>
 					</div>
@@ -108,7 +132,10 @@
 							</div>
 						</div>
 						<div class="col-md-12">
-							<button class="pull-right btn btn-primary" ng-click="addFacture()">Ajouter</button>
+							<span class="pull-right">
+								<button class=" btn btn-primary" type="submit" ng-click="addFacture(true)">Ajouter et entrer une autre facture</button> 
+								<button class=" btn btn-success" type="button" ng-click="addFacture(false)">Ajouter</button>
+							</span>
 						</div>
 					</div>
 				</form>
@@ -132,8 +159,8 @@
 					<th>Date remboursement</th>
 					<th>Prix TTC</th>
 					<th>TVA</th>
+					<th>État</th>
 					<th>Personne à rembourser</th>
-					<th>Moyen de paiement</th>
 					<th>Perm</th>
 				</tr>
 			</thead>
@@ -145,8 +172,17 @@
 				<td>{{ (facture.date_remboursement | date) || '--' }}</td>
 				<td>{{ facture.prix }} €</td>
 				<td>{{ tva.getVATFromTTCAndPercentage(facture.prix, facture.tva).toFixed(2) }} €</td>
+				<td ng-show="facture.modifyingState">
+					<select class="form-control" ng-model="facture.etat">
+						<option value="D">À payer</option>
+						<option value="R">À rembourser</option>
+						<option value="E">En attente</option>
+						<option value="P">Payée</option>
+					</select>
+					<button class="btn btn-xs btn-primary" ng-click="sendState(facture)" ng-disabled="facture.updating"><span class="glyphicon glyphicon-ok"></span></button>
+				</td>
+				<td ng-hide="facture.modifyingState"><span class="label" ng-class="stateLabel(facture.etat)">{{ state(facture.etat) }}</span> <a href="" ng-click="modifyState(facture)" class="glyphicon glyphicon-pencil"></a></td>
 				<td>{{ (facture.personne_a_rembourser) || '--' }}</td>
-				<td>{{ facture.moyen_paiement }}</td>
 				<td><a ng-show="facture.perm" href="#/perm/{{facture.perm}}">Détails</a><span ng-hide="facture.perm">--</span></td>
 			</tr>
 		</table>

@@ -1,4 +1,4 @@
-angular.module('picsousApp').controller('FacturesEmisesCtrl', function($http, $q, APP_URL, $scope, loadingSpin, message, NgTableParams) {
+angular.module('picsousApp').controller('FacturesEmisesCtrl', function($http, $q, APP_URL, $scope, loadingSpin, message, objectStates, NgTableParams) {
 	$scope.factureRowsInit = function() { $scope.newFactureRows = [{}]; };
 	$scope.factureRowsInit();
 
@@ -53,21 +53,8 @@ angular.module('picsousApp').controller('FacturesEmisesCtrl', function($http, $q
 		});
 	};
 
-	$scope.state = function(state) {
-		if (state === 'D') return 'Dûe';
-		if (state === 'T') return 'Partiellement payée';
-		if (state === 'A') return 'Annulée';
-		if (state === 'P') return 'Payée';
-		return state;
-	};
-
-	$scope.stateLabel = function(state) {
-		if (state === 'D') return 'label-danger';
-		if (state === 'T') return 'label-warning';
-		if (state === 'A') return 'label-default';
-		if (state === 'P') return 'label-primary';
-		return 'label-default'
-	};
+	$scope.state = objectStates.factureEmiseState;
+	$scope.stateLabel = objectStates.factureEmiseStateLabel;
 
 	$scope.getFactures();
 });

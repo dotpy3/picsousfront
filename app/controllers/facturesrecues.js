@@ -1,4 +1,4 @@
-angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, APP_URL, $scope, tva, message, NgTableParams, loadingSpin) {
+angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, APP_URL, $scope, tva, message, NgTableParams, dateWrapper, objectStates, loadingSpin) {
 	$scope.tva = tva;
 	$scope.factures = [];
 	loadingSpin.start();
@@ -66,8 +66,15 @@ angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, AP
 		});
 	};
 
-	$scope.addFacture = function() {
+	$scope.addFacture = function(keep) {
 		var newFacture = angular.copy($scope.newFacture);
+		newFacture.date = dateWrapper.DateToStringDate(newFacture.date);
+		if (newFacture.date_paiement) {
+			newFacture.date_paiement = dateWrapper.DateToStringDate(newFacture.date_paiement);
+		}
+		if (newFacture.date_remboursement) {
+			newFacture.date_remboursement = dateWrapper.DateToStringDate(newFacture.date_remboursement);
+		}
 		var prixHT = newFacture.prix - newFacture.tva_complete;
 		var pourcentage_tva = (newFacture.tva_complete / prixHT) * 100;
 		newFacture.tva = pourcentage_tva.toFixed(2);
@@ -79,10 +86,50 @@ angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, AP
 		}).then(function(response) {
 			$scope.factures.push(response.data);
 			$scope.newFacture = {};
-			$scope.addingFacture = false;
+			if (!keep) {
+				$scope.addingFacture = false;
+			}
 			message.success('Facture bien ajoutée !');
 		});
 	};
+
+	$scope.modifyState = function(fac) {
+		fac.modifyingState = true;
+	};
+
+	$scope.openPopup = function(index) {
+		$scope['popup' + index + 'Open'] = true;
+	};
+
+	$scope.dateOptions = {
+		initDate: new Date(),
+		dateDisabled: false,
+		formatYear: 'yy',
+	};
+
+	$scope.sendState = function(fac) {
+		fac.updating = true;
+		loadingSpin.start();
+		$http({
+			method: 'PATCH',
+			url: APP_URL + '/facturesRecues/' + fac.id + '/',
+			data: {
+				id: fac.id,
+				etat: fac.etat,
+			}
+		}).then(function() {
+			fac.updating = false;
+			fac.modifyingState = false;
+			loadingSpin.end();
+			message.success('État de la facture modifié !');
+		}, function() {
+			fac.updating = false;
+			loadingSpin.end();
+		});
+	};
+
+	$scope.state = objectStates.factureRecueState;
+	$scope.stateLabel = objectStates.factureRecueStateLabel;
 
 	$scope.loadingFactures = true;
 	$http({

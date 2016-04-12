@@ -65,8 +65,8 @@ angular.module('picsousApp', [
 		$httpProvider.interceptors.push(function($q, message, APP_URL) {
 			return {
 				request: function(config) {
-					if (config.url.search(APP_URL) !== '-1') {
-						if (config.url.indexOf('?') === '-1') {
+					if (config.url.search(APP_URL) !== '-1' && config.url.search('.html') === '-1') {
+						if (config.url.indexOf('?') !== '-1') {
 							config.url += '&randValue=' + Math.random()*10000000000000000000000;
 						} else {
 							config.url += '?randValue=' + Math.random()*10000000000000000000000;

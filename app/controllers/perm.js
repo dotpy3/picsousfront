@@ -1,4 +1,4 @@
-angular.module('picsousApp').controller('PermCtrl', function($routeParams, casConnectionCheck, $http, APP_URL, $scope, message, loadingSpin) {
+angular.module('picsousApp').controller('PermCtrl', function($routeParams, casConnectionCheck, objectStates, $http, APP_URL, $scope, message, dateWrapper, loadingSpin) {
 	$scope.app_url = APP_URL;
 	$scope.categories = [];
 
@@ -15,6 +15,9 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 		}
 		return 'N';
 	};
+
+	$scope.factureRecueStateLabel = objectStates.factureRecueStateLabel;
+	$scope.factureRecueState = objectStates.factureRecueState;
 
 	$scope.stateLabel = function(state) {
 		if (state === 'T') return 'label-success';
@@ -64,6 +67,16 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 		}, function() {
 			loadingSpin.end();
 		});
+	};
+
+	$scope.openPopup = function(index) {
+		$scope['popup' + index + 'Open'] = true;
+	};
+
+	$scope.dateOptions = {
+		initDate: new Date(),
+		dateDisabled: false,
+		formatYear: 'yy',
 	};
 
 	$scope.sendJustificatif = function() {
@@ -141,6 +154,13 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 
 	$scope.addFacture = function() {
 		var newFacture = angular.copy($scope.newFacture);
+		newFacture.date = dateWrapper.DateToStringDate(newFacture.date);
+		if (newFacture.date_paiement) {
+			newFacture.date_paiement = dateWrapper.DateToStringDate(newFacture.date_paiement);
+		}
+		if (newFacture.date_remboursement) {
+			newFacture.date_remboursement = dateWrapper.DateToStringDate(newFacture.date_remboursement);
+		}
 		var prixHT = newFacture.prix - newFacture.tva_complete;
 		var pourcentage_tva = (newFacture.tva_complete / prixHT) * 100;
 		newFacture.tva = pourcentage_tva.toFixed(2);
@@ -181,7 +201,7 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 
 	$scope.updateArticle = function(article) {
 		loadingSpin.start();
-		$http({
+		return $http({
 			method: 'GET',
 			url: APP_URL + '/updatearticle/' + article.id,
 		}).then(function(response) {

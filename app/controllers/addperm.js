@@ -31,6 +31,16 @@ angular.module('picsousApp').controller('AddPermCtrl', function($scope, APP_URL,
 		});
 	};
 
+	$scope.typeaheadPermName = function(q) {
+		if (!q) return;
+		return $http({
+			method: 'GET',
+			url: APP_URL + '/permautocomplete/?q=' + q,
+		}).then(function(response) {
+			return response.data.results;
+		});
+	};
+
 	$scope.popupOpen = false;
 
 	$scope.openPopup = function() {

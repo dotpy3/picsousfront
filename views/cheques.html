@@ -19,7 +19,7 @@
 					</div>
 					<div class="form-group col-md-2">
 						<label>Valeur</label>
-						<input type="number" class="form-control" ng-model="newCheque.valeur" />
+						<input type="text" class="form-control" ng-model="newCheque.valeur" />
 					</div>
 					<div class="form-group col-md-2">
 						<label>Numéro de talon</label>
@@ -29,6 +29,7 @@
 						<label>Etat</label>
 						<select class="form-control" ng-model="newCheque.state">
 							<option value="E">Encaissé</option>
+							<option value="P">En cours</option>
 							<option value="A">Annulé</option>
 							<option value="C">Caution</option>
 						</select>
@@ -55,7 +56,18 @@
 				<td><a ng-click="modifyCheque(cheque)">{{ cheque.num }}</a></td>
 				<td>{{cheque.destinataire}}</td>
 				<td>{{cheque.valeur.toFixed(2)}} €</td>
-				<td><span class="label" ng-class="getChequeStateLabel(cheque.state)">{{getChequeState(cheque.state)}}</span></td>
+				<td>
+					<span ng-hide="cheque.quickChange"><span class="label" ng-class="getChequeStateLabel(cheque.state)">{{getChequeState(cheque.state)}}</span> <a href=""><span ng-click="cheque.quickChange = true" class="glyphicon glyphicon-pencil small"></span></a></span>
+					<span ng-show="cheque.quickChange">
+						<select class="form-control" ng-model="cheque.state">
+							<option value="E">Encaissé</option>
+							<option value="P">En cours</option>
+							<option value="A">Annulé</option>
+							<option value="C">Caution</option>
+						</select>
+						<button class="btn btn-sm btn-primary" ng-disabled="cheque.quicksave" ng-click="quickChange(cheque)"><span class="glyphicon glyphicon-ok"></span></button>
+					</span>
+				</td>
 				<td><a href="#/facturesrecues/{{cheque.facturerecue}}" ng-show="cheque.facturerecue">Détails</a><span ng-hide="cheque.facturerecue">--</span></td>
 			</tr>
 		</table>
@@ -66,29 +78,28 @@
 				Modifier un chèque
 			</div>
 			<div class="panel-body">
-				<form ng-submit="sendChequeModification()">
-					<div class="form-group">
-						<label>Destinataire</label>
-						<input type="text" class="form-control" ng-model="modifiedCheque.destinataire" />
-					</div>	
-					<div class="form-group">
-						<label>Valeur</label>
-						<input type="number" class="form-control" ng-model="modifiedCheque.valeur" />
-					</div>
-					<div class="form-group">
-						<label>Numéro de talon</label>
-						<input type="number" class="form-control" ng-model="modifiedCheque.num" />
-					</div>
-					<div class="form-group">
-						<label>Etat</label>
-						<select class="form-control" ng-model="modifiedCheque.state">
-							<option value="E">Encaissé</option>
-							<option value="A">Annulé</option>
-							<option value="C">Caution</option>
-						</select>
-					</div>
-					<button class="btn btn-primary" ng-disabled="sendingChequeModification">Sauvegarder</button>
-				</form>
+				<div class="form-group">
+					<label>Destinataire</label>
+					<input type="text" class="form-control" ng-model="modifiedCheque.destinataire" />
+				</div>	
+				<div class="form-group">
+					<label>Valeur</label>
+					<input type="text" class="form-control" ng-model="modifiedCheque.valeur" />
+				</div>
+				<div class="form-group">
+					<label>Numéro de talon</label>
+					<input type="number" class="form-control" ng-model="modifiedCheque.num" />
+				</div>
+				<div class="form-group">
+					<label>Etat</label>
+					<select class="form-control" ng-model="modifiedCheque.state">
+						<option value="E">Encaissé</option>
+						<option value="P">En cours</option>
+						<option value="A">Annulé</option>
+						<option value="C">Caution</option>
+					</select>
+				</div>
+				<button class="btn btn-primary" ng-disabled="sendingChequeModification" ng-click="sendChequeModification()">Sauvegarder</button> <button class="btn btn-danger" ng-click="deleteCheque(modifiedCheque)">Supprimer le chèque</button>
 			</div>
 		</div>
 	</div>

@@ -1,4 +1,4 @@
-angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParams, tva, $http, $scope, loadingSpin, APP_URL) {
+angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParams, message, tva, $http, $scope, $window, loadingSpin, APP_URL) {
 	$scope.tva = tva;
 
 	var getFacture = function() {
@@ -14,6 +14,16 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 			loadingSpin.end();
 		});
 	};
+
+	$scope.deleteFacture = function() {
+		if (!confirm('Voulez-vous vraiment supprimer cette facture ?')) return;
+		$http({
+			method: 'DELETE',
+			url: APP_URL + '/facturesRecues/' + $routeParams.id,
+		}).then(function(response) {
+			$location.path('/');
+		});
+	}
 
 	$scope.getChequeState = function(state) {
 		if (state === 'C') return 'Caution';
@@ -40,6 +50,7 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 		$scope.facture.tva = tva.getVATPercentageFromTTCAndVAT($scope.facture.prix, $scope.facture.new_vat);
 		var newFacture = angular.copy($scope.facture);
 		delete newFacture.new_tva;
+		delete newFacture.cheque_set;
 		loadingSpin.start();
 		$http({
 			method: 'PUT',
@@ -48,6 +59,7 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 		}).then(function() {
 			$scope.modifyingFacture = false;
 			loadingSpin.end();
+			message.success('Facture bien modifiée !');
 		}, function() {
 			loadingSpin.end();
 		});
