@@ -1,6 +1,13 @@
 angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, APP_URL, $scope, tva, message, NgTableParams, dateWrapper, objectStates, loadingSpin) {
 	$scope.tva = tva;
 	$scope.factures = [];
+	$scope.filters = {
+		payees: true,
+		arembourser: true,
+		apayer: true,
+		enattente: true,
+	};
+
 	loadingSpin.start();
 	$http({
 		method: 'GET',
@@ -11,6 +18,24 @@ angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, AP
 	}, function() {
 		loadingSpin.end();
 	});
+
+	$scope.getFactures = function() {
+		return $scope.factures.filter(function(p) {
+			if ($scope.filters.payees && p.etat === 'P') {
+				return true;
+			}
+			if ($scope.filters.arembourser && p.etat === 'R') {
+				return true;
+			}
+			if ($scope.filters.apayer && p.etat === 'D') {
+				return true;
+			}
+			if ($scope.filters.enattente && p.etat === 'E') {
+				return true;
+			}
+			return false;
+		});
+	};
 
 	$scope.getCategoryCode = function(id) {
 		for (var i in $scope.categories) {

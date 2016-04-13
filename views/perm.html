@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="page-header">
-			<h1><a href="#/allperms">Perms</a> > {{ perm.nom }}<span class="pull-right"><button ng-click="modifyPerm()" ng-hide="modifyingPerm" class="btn btn-primary">Modifier</button><button ng-click="savePerm()" ng-show="modifyingPerm" class="btn btn-primary">Sauvegarder</button> <button class="btn btn-danger" ng-show="modifyingPerm" ng-click="cancelModifyPerm()">Annuler</button></span></h1>
+			<h1><a href="#/allperms">Perms</a> > {{ perm.nom }}<span class="pull-right"><button ng-click="modifyPerm()" ng-hide="modifyingPerm" class="btn btn-primary">Modifier</button> <button ng-hide="modifyingPerm || !isAdmin()" class="btn btn-success" ng-click="totalSales()">Obtenir les ventes</button><button ng-click="savePerm()" ng-show="modifyingPerm" class="btn btn-primary">Sauvegarder</button> <button class="btn btn-danger" ng-show="modifyingPerm" ng-click="cancelModifyPerm()">Annuler</button></span></h1>
 		</div>
 	</div>
 </div>
@@ -49,6 +49,17 @@
 				<td><input type="checkbox" ng-model="perm.traitee" /></td>
 			</tr>
 		</table>
+	</div>
+</div>
+<div class="panel panel-default" ng-show="salesInfo">
+	<div class="panel-heading">
+		Total des ventes
+	</div>
+	<div class="panel-body">
+		<ul>
+			<li><strong>Ventes HT</strong> : {{ salesInfo.total_ht }} €</li>
+			<li><strong>Ventes TTC</strong> : {{ salesInfo.total_ttc }} €</li>
+		</ul>
 	</div>
 </div>
 <div class="row" ng-show="perm.asso">

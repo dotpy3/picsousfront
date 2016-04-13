@@ -1,4 +1,4 @@
-angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParams, message, tva, $http, $scope, $window, loadingSpin, APP_URL) {
+angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParams, message, objectStates, tva, $http, $scope, $location, loadingSpin, APP_URL) {
 	$scope.tva = tva;
 
 	var getFacture = function() {
@@ -18,10 +18,10 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 	$scope.deleteFacture = function() {
 		if (!confirm('Voulez-vous vraiment supprimer cette facture ?')) return;
 		$http({
-			method: 'DELETE',
-			url: APP_URL + '/facturesRecues/' + $routeParams.id,
+			method: 'GET',
+			url: APP_URL + '/deletefacturerecue/' + $routeParams.id + '/',
 		}).then(function(response) {
-			$location.path('/');
+			$location.path('/facturesrecues');
 		});
 	}
 
@@ -112,6 +112,9 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 		}
 		return '';
 	};
+
+	$scope.stateLabel = objectStates.factureRecueStateLabel;
+	$scope.state = objectStates.factureRecueState;
 
 	var init = function() {
 		getFacture();

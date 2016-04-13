@@ -149,6 +149,28 @@
 				</p>
 			</p>
 		</div>
+		<div class="row">
+			<div class="col-md-2 col-sm-3">
+				<div class="checkbox">
+					<label><input type="checkbox" ng-model="filters.payees" /> Factures payées</label>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-3">
+				<div class="checkbox">
+					<label><input type="checkbox" ng-model="filters.apayer" /> Factures à payer</label>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-3">
+				<div class="checkbox">
+					<label><input type="checkbox" ng-model="filters.arembourser" /> Factures à rembourser</label>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-3">
+				<div class="checkbox">
+					<label><input type="checkbox" ng-model="filters.enattente" /> Factures en attente</label>
+				</div>
+			</div>
+		</div>
 		<table class="table table-striped" ng-show="factures.length > 0">
 			<thead>
 				<tr>
@@ -164,7 +186,7 @@
 					<th>Perm</th>
 				</tr>
 			</thead>
-			<tr ng-repeat="facture in factures | orderBy:-date_paiement | filter:searchField">
+			<tr ng-repeat="facture in getFactures() | orderBy:-date_paiement | filter:searchField">
 				<td><a href="#/facturesrecues/{{facture.id}}">Fac. {{ getCategoryCode(facture.categorie) + facture.id }}</a></td>
 				<td>{{ facture.nom_entreprise }}</td>
 				<td>{{ facture.date | date }}</td>

@@ -15,8 +15,6 @@ Interface de gestion de la trésorerie pour le Pic'Asso, foyer étudiant de l'Un
 * Séparer "Ajouter perm" de "Liste des perms"
 * Pouvoir changer une facture de perm
 * Pouvoir changer un chèque de facture
-* Ajouter le total des ventes à la page d'une perm
-* Pouvoir supprimer des factures
 * Si choix du repsonsable par autocomplete : automatiquement ajouter le mail à partir du login/de ginger
 
 ### Utile

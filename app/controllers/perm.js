@@ -6,6 +6,20 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 		return casConnectionCheck.isAdmin();
 	};
 
+	$scope.totalSales = function() {
+		loadingSpin.start();
+		$scope.salesInfo = null;
+		$http({
+			method: 'GET',
+			url: APP_URL + '/permsales/' + $routeParams.id + '/',
+		}).then(function(response) {
+			$scope.salesInfo = response.data;
+			loadingSpin.end();
+		}, function() {
+			loadingSpin.end();
+		});
+	};;
+
 	$scope.getState = function(p) {
 		if (p.state === 'T') {
 			return 'T';
@@ -208,6 +222,7 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 			loadingSpin.end();
 			article.ventes = response.data;
 			article.ventes_last_update = new Date();
+			$scope.salesInfo = null;
 			message.success('Article mis à jour. Ventes de l\'article : ' + response.data + ' ventes.');
 		}, function() {
 			loadingSpin.end();

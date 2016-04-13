@@ -2,9 +2,9 @@ angular.module('picsousApp').controller('AllPermsCtrl', function($http, APP_URL,
 	loadingSpin.start();
 	$scope.perms = [];
 	$scope.filters = {
-		traite: false,
-		nontraite: false,
-		sansfacture: false,
+		traite: true,
+		nontraite: true,
+		sansfacture: true,
 	};
 	
 	var init = function() {
@@ -29,9 +29,6 @@ angular.module('picsousApp').controller('AllPermsCtrl', function($http, APP_URL,
 				return true;
 			}
 			if (filters.sansfacture && p.state === 'V') {
-				return true;
-			}
-			if (!filters.traite && !filters.nontraite && !filters.sansfacture) {
 				return true;
 			}
 			return false;
