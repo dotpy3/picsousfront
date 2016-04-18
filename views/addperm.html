@@ -6,6 +6,13 @@
 	</div>
 </div>
 <div class="row">
+	<div class="form-group col-md-6 col-md-offset-3">
+		<label>Retrouver une perm</label>
+		<input type="text" class="form-control" ng-model="permToFind" placeholder="Nom de la perm..." typeahead-on-select="findPerm($item)" uib-typeahead="perm as perm.text for perm in typeaheadPermName($viewValue)"></div>
+	</div>
+	<div class="col-md-12" ng-show="gettingPerm">
+		<div class="alert alert-info">Récupération de la perm en cours...</div>
+	</div>
 	<div class="col-md-12">
 		<p>Ajoutez une perm pour pouvoir y associer des factures reçues et des chèques, ainsi que pour pouvoir créer des articles qui seront associés à la perm.</p>
 	</div>
@@ -16,7 +23,7 @@
 			<div class="row">
 				<div class="form-group col-md-4">
 					<label>Nom de la perm</label>
-					<input type="text" class="form-control" ng-model="perm.nom" uib-typeahead="perm.text for perm in typeaheadPermName($viewValue)" placeholder="Association Perm" />
+					<input type="text" class="form-control" ng-model="perm.nom" placeholder="Association Perm" ng-disabled="gettingPerm" />
 				</div>
 				<div class="form-group col-md-4">
 					<label>Date de la perm</label>
@@ -39,26 +46,26 @@
 			<div class="row">
 				<div class="form-group col-md-4">
 					<label>Nom du responsable</label>
-					<input type="text" class="form-control" ng-model="perm.nom_resp" uib-typeahead="address.name for address in typeahead($viewValue)" placeholder="Prénom NOM" />
+					<input type="text" class="form-control" ng-disabled="gettingPerm" ng-model="perm.nom_resp" uib-typeahead="address.name for address in typeahead($viewValue)" placeholder="Prénom NOM" />
 				</div>
 				<div class="form-group col-md-4">
 					<label>Téléphone du responsable</label>
-					<input type="text" class="form-control" ng-model="perm.tel_resp" placeholder="06 12 34 56 78" />
+					<input type="text" class="form-control" ng-disabled="gettingPerm" ng-model="perm.tel_resp" placeholder="06 12 34 56 78" />
 				</div>
 				<div class="form-group col-md-4">
 					<label>Mail du responsable</label>
-					<input type="text" class="form-control" ng-model="perm.mail_resp" placeholder="login@etu.utc.fr" />
+					<input type="text" class="form-control" ng-disabled="gettingPerm" ng-model="perm.mail_resp" placeholder="login@etu.utc.fr" />
 				</div>
 			</div>
 			<div class="form-group">
 				<label>
-					<input ng-model="perm.asso" ng-init="perm.asso = false" type="checkbox" />
+					<input ng-model="perm.asso" ng-disabled="gettingPerm" ng-init="perm.asso = false" type="checkbox" />
 					Association
 				</label>
 			</div>
 			<div class="form-group col-md-4" ng-show="perm.asso">
 				<label>Rôle du responsable</label>
-				<input type="text" class="form-control" ng-model="perm.role" placeholder="Responsable Perm" />
+				<input type="text" class="form-control" ng-model="perm.role" ng-disabled="gettingPerm" placeholder="Responsable Perm" />
 			</div>
 		</form>
 	</div>
