@@ -1,4 +1,4 @@
-angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParams, message, objectStates, tva, $http, $scope, $location, loadingSpin, APP_URL) {
+angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParams, dateWrapper, message, objectStates, tva, $http, $scope, $location, loadingSpin, APP_URL) {
 	$scope.tva = tva;
 
 	var getFacture = function() {
@@ -9,19 +9,81 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 		}).then(function(response) {
 			$scope.facture = response.data;
 			$scope.facture.tva_complete = false;
+			if ($scope.facture.perm) {
+				getFacturePerm();
+			}
 			loadingSpin.end();
 		}, function() {
 			loadingSpin.end();
 		});
 	};
 
+	$scope.changingPerm = false;
+	$scope.changePerm = function() {
+		loadingSpin.start();
+		$scope.changingPerm = true;
+		$scope.oldPerm = $scope.facture.perm;
+		$scope.loadingPerms = true;
+		$http({
+			method: 'GET',
+			url: APP_URL + '/permnames/'
+		}).then(function(response) {
+			loadingSpin.end();
+			$scope.allPerms = response.data;
+			$scope.loadingPerms = false;
+		}, function() {
+			loadingSpin.end();
+		});
+	};
+
+	$scope.cancelChangingPerm = function() {
+		$scope.facture.perm = $scope.oldPerm;
+		$scope.changingPerm = false;
+	};
+
+	$scope.saveChangingPerm = function() {
+		loadingSpin.start();
+		$http({
+			method: 'PATCH',
+			url: APP_URL + '/facturesRecues/' + $routeParams.id + '/',
+			data: {
+				id: $routeParams.id,
+				perm: $scope.facture.perm,
+			}
+		}).then(function(response) {
+			getFacturePerm();
+			loadingSpin.end();
+			message.success('Perm bien modifiée !');
+			$scope.changingPerm = false;
+		}, function() {
+			loadingSpin.end();
+		});
+	};
+
+	var getFacturePerm = function() {
+		loadingSpin.start();
+		$http({
+			method: 'GET',
+			url: APP_URL + '/permnames/' + $scope.facture.perm + '/',
+		}).then(function(response) {
+			$scope.permName = response.data.nom;
+			var tDate = new Date(response.data.date);
+			$scope.permDate = dateWrapper.DateToSimpleStringDate(tDate);
+			loadingSpin.end();
+		});
+	};
+
 	$scope.deleteFacture = function() {
 		if (!confirm('Voulez-vous vraiment supprimer cette facture ?')) return;
+		loadingSpin.start();
 		$http({
 			method: 'GET',
 			url: APP_URL + '/deletefacturerecue/' + $routeParams.id + '/',
 		}).then(function(response) {
 			$location.path('/facturesrecues');
+			loadingSpin.end();
+		}, function() {
+			loadingSpin.end();
 		});
 	}
 

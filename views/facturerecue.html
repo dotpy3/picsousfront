@@ -57,7 +57,7 @@
 				<td>{{facture.moyen_paiement}}</td>
 				<td><span class="label" ng-class="stateLabel(facture.etat)">{{ state(facture.etat) }}</span></td>
 				<td><input type="checkbox" ng-model="facture.immobilisation" disabled /></td>
-				<td><a href="#/perm/{{facture.perm}}" ng-show="facture.perm">Détails</a><span ng-hide="facture.perm">Pas de perm</span></td>
+				<td><a href="#/perm/{{facture.perm}}" ng-show="facture.perm">{{ permName + ' (' + permDate + ')' || 'Détails' }}</a><span ng-hide="facture.perm">Pas de perm</span></td>
 			</tr>
 			<tr ng-show="modifyingFacture">
 				<td><input type="text" ng-model="facture.moyen_paiement" class="form-control" /></td>
@@ -70,7 +70,18 @@
 					</select>
 				</td>
 				<td><input type="checkbox" ng-model="facture.immobilisation" /></td>
-				<td><a href="#/perm/{{facture.perm}}" ng-show="facture.perm">Détails</a><span ng-hide="facture.perm">Pas de perm</span></td>
+
+				<td ng-hide="changingPerm">
+					<a href="#/perm/{{facture.perm}}" ng-show="facture.perm">{{ permName + ' (' + permDate + ')' || 'Détails' }}</a>
+					<span ng-hide="facture.perm">Pas de perm</span>
+					<button class="btn btn-xs btn-primary" ng-click="changePerm()">Changer</button>
+				</td>
+
+				<td ng-show="changingPerm">
+					<select class="form-control" ng-model="facture.perm" ng-disabled="loadingPerms" ng-options="perm.id as perm.nom for perm in allPerms">
+					</select>
+					<button class="btn btn-xs btn-primary glyphicon glyphicon-ok" ng-click="saveChangingPerm()"></button> <button class="btn btn-xs btn-danger glyphicon glyphicon-remove" ng-click="cancelChangingPerm()"></button>
+				</td>
 			</tr>
 		</table>
 	</div>

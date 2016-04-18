@@ -12,8 +12,6 @@ Interface de gestion de la trésorerie pour le Pic'Asso, foyer étudiant de l'Un
 
 * Pour les GET de factures/perms : limiter le nb de résultats, faire une pagination ?
 * Génération de justificatif : forcer la maj des ventes avant
-* Séparer "Ajouter perm" de "Liste des perms"
-* Pouvoir changer une facture de perm
 * Pouvoir changer un chèque de facture
 * Si choix du repsonsable par autocomplete : automatiquement ajouter le mail à partir du login/de ginger
 
