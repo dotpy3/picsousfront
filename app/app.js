@@ -67,7 +67,7 @@ angular.module('picsousApp', [
 				request: function(config) {
 					loadingSpin.start();
 					if (config.url.search(APP_URL) !== '-1' && config.url.search('.html') !== '-1') {
-						if (config.url.indexOf('?') === '-1') {
+						if (config.url.indexOf('?') !== -1) {
 							config.url += '&randValue=' + Math.random()*10000000000000000000000;
 						} else {
 							config.url += '?randValue=' + Math.random()*10000000000000000000000;
