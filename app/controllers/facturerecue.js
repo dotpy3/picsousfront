@@ -1,8 +1,7 @@
-angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParams, dateWrapper, message, objectStates, tva, $http, $scope, $location, loadingSpin, APP_URL) {
+angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParams, dateWrapper, message, objectStates, tva, $http, $scope, $location, APP_URL) {
 	$scope.tva = tva;
 
 	var getFacture = function() {
-		loadingSpin.start();
 		$http({
 			method: 'GET',
 			url: APP_URL + '/facturesRecues/' + $routeParams.id,
@@ -12,15 +11,11 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 			if ($scope.facture.perm) {
 				getFacturePerm();
 			}
-			loadingSpin.end();
-		}, function() {
-			loadingSpin.end();
 		});
 	};
 
 	$scope.changingPerm = false;
 	$scope.changePerm = function() {
-		loadingSpin.start();
 		$scope.changingPerm = true;
 		$scope.oldPerm = $scope.facture.perm;
 		$scope.loadingPerms = true;
@@ -28,11 +23,12 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 			method: 'GET',
 			url: APP_URL + '/permnames/'
 		}).then(function(response) {
-			loadingSpin.end();
 			$scope.allPerms = response.data;
+			$scope.allPerms.forEach(function(perm) {
+				var date = new Date(perm.date);
+				perm.nomAndDate = perm.nom + ' (' + dateWrapper.DateToSimpleStringDate(date) + ')';
+			});
 			$scope.loadingPerms = false;
-		}, function() {
-			loadingSpin.end();
 		});
 	};
 
@@ -42,7 +38,6 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 	};
 
 	$scope.saveChangingPerm = function() {
-		loadingSpin.start();
 		$http({
 			method: 'PATCH',
 			url: APP_URL + '/facturesRecues/' + $routeParams.id + '/',
@@ -52,16 +47,12 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 			}
 		}).then(function(response) {
 			getFacturePerm();
-			loadingSpin.end();
 			message.success('Perm bien modifiée !');
 			$scope.changingPerm = false;
-		}, function() {
-			loadingSpin.end();
 		});
 	};
 
 	var getFacturePerm = function() {
-		loadingSpin.start();
 		$http({
 			method: 'GET',
 			url: APP_URL + '/permnames/' + $scope.facture.perm + '/',
@@ -69,21 +60,16 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 			$scope.permName = response.data.nom;
 			var tDate = new Date(response.data.date);
 			$scope.permDate = dateWrapper.DateToSimpleStringDate(tDate);
-			loadingSpin.end();
 		});
 	};
 
 	$scope.deleteFacture = function() {
 		if (!confirm('Voulez-vous vraiment supprimer cette facture ?')) return;
-		loadingSpin.start();
 		$http({
 			method: 'GET',
 			url: APP_URL + '/deletefacturerecue/' + $routeParams.id + '/',
 		}).then(function(response) {
 			$location.path('/facturesrecues');
-			loadingSpin.end();
-		}, function() {
-			loadingSpin.end();
 		});
 	}
 
@@ -113,23 +99,17 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 		var newFacture = angular.copy($scope.facture);
 		delete newFacture.new_tva;
 		delete newFacture.cheque_set;
-		loadingSpin.start();
 		$http({
 			method: 'PUT',
 			url: APP_URL + '/facturesRecues/' + $routeParams.id + '/',
 			data: newFacture,
 		}).then(function() {
 			$scope.modifyingFacture = false;
-			loadingSpin.end();
 			message.success('Facture bien modifiée !');
-		}, function() {
-			loadingSpin.end();
 		});
-		
 	};
 
 	$scope.addCheque = function() {
-		loadingSpin.start();
 		$scope.newCheque.facturerecue = $scope.facture.id;
 		$http({
 			method: 'POST',
@@ -140,11 +120,8 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 				$scope.facture.cheque_set = [];
 			}
 			$scope.facture.cheque_set.push(response.data);
-			loadingSpin.end();
 			$scope.addingFacture = false;
-		}, function() {
-			loadingSpin.end();
-		})
+		});
 	};
 
 	$scope.modifyFacture = function() {
@@ -154,15 +131,11 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 	};
 
 	var getCategories = function() {
-		loadingSpin.start();
 		$http({
 			method: 'GET',
 			url: APP_URL + '/categoriesFactureRecue/',
 		}).then(function(response) {
-			loadingSpin.end();
 			$scope.categories = response.data;
-		}, function() {
-			loadingSpin.end();
 		});
 	};
 

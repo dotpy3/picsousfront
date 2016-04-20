@@ -1,4 +1,4 @@
-angular.module('picsousApp').controller('PermCtrl', function($routeParams, casConnectionCheck, objectStates, $http, APP_URL, $scope, message, dateWrapper, loadingSpin) {
+angular.module('picsousApp').controller('PermCtrl', function($routeParams, casConnectionCheck, objectStates, $http, APP_URL, $scope, message, dateWrapper) {
 	$scope.app_url = APP_URL;
 	$scope.categories = [];
 
@@ -47,7 +47,6 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 		return state;
 	};
 
-	loadingSpin.start();
 	$http({
 		method: 'GET',
 		url: APP_URL + '/perms/' + $routeParams.id,
@@ -55,9 +54,6 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 		$scope.perm = response.data;
 		$scope.newArticle.perm = $scope.perm.id;
 		$scope.perm.state = $scope.getState($scope.perm);
-		loadingSpin.end();
-	}, function() {
-		loadingSpin.end();
 	});
 
 	$scope.newArticle = {
@@ -71,15 +67,11 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 	var oldPerm;
 
 	$scope.sendConvention = function() {
-		loadingSpin.start();
 		$http({
 			method: 'POST',
 			url: APP_URL + '/sendconvention/' + $scope.perm.id,
 		}).then(function() {
-			loadingSpin.end();
 			message.success('Convention envoyée !');
-		}, function() {
-			loadingSpin.end();
 		});
 	};
 
@@ -94,15 +86,11 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 	};
 
 	$scope.sendJustificatif = function() {
-		loadingSpin.start();
 		$http({
 			method: 'POST',
 			url: APP_URL + '/sendjustificatif/' + $scope.perm.id,
 		}).then(function() {
-			loadingSpin.end();
 			message.success('Justificatif envoyé !');
-		}, function() {
-			loadingSpin.end();
 		});
 	};
 
@@ -126,7 +114,6 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 		delete sendPerm.article_set;
 		delete sendPerm.facturerecue_set;
 		delete sendPerm.traitee;
-		loadingSpin.start();
 		$http({
 			method: 'PUT',
 			url: APP_URL + '/perms/' + $routeParams.id + '/',
@@ -134,10 +121,7 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 		}).then(function() {
 			$scope.perm.state = $scope.getState($scope.perm);
 			$scope.modifyingPerm = false;
-			loadingSpin.end();
 			message.success('Perm bien modifiée !');
-		}, function() {
-			loadingSpin.end();
 		});
 	};
 
@@ -155,15 +139,11 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 		return '';
 	};
 
-	loadingSpin.start();
 	$http({
 		method: 'GET',
 		url: APP_URL + '/categoriesFactureRecue/',
 	}).then(function(response) {
-		loadingSpin.end();
 		$scope.categories = response.data;
-	}, function() {
-		loadingSpin.end();
 	});
 
 	$scope.addFacture = function() {
@@ -180,57 +160,45 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 		newFacture.tva = pourcentage_tva.toFixed(2);
 		newFacture.perm = $routeParams.id;
 		delete newFacture.tva_complete;
-		loadingSpin.start();
 		$http({
 			method: 'POST',
 			data: newFacture,
 			url: APP_URL + '/facturesRecues/',
 		}).then(function(response) {
-			loadingSpin.end();
 			$scope.perm.facturerecue_set.push(response.data);
 			$scope.newFacture = {};
 			$scope.addingFacture = false;
 			message.success('Facture bien ajoutée !');
-		}, function() {
-			loadingSpin.end();
 		});
 	};
 
 	$scope.addToPayutc = function(article) {
-		loadingSpin.start();
 		article.addingToPayutc = true;
 		$http({
 			method: 'GET',
 			url: APP_URL + '/createpayutcarticle/' + article.id,
 		}).then(function(response) {
-			loadingSpin.end();
 			article.id_payutc = response.data;
 			article.addingToPayutc = false;
 			message.success('Article bien ajouté à PayUTC !');
 		}, function() {
-			loadingSpin.end();
 			article.addingToPayutc = false;
 		});
 	};
 
 	$scope.updateArticle = function(article) {
-		loadingSpin.start();
 		return $http({
 			method: 'GET',
 			url: APP_URL + '/updatearticle/' + article.id,
 		}).then(function(response) {
-			loadingSpin.end();
 			article.ventes = response.data;
 			article.ventes_last_update = new Date();
 			$scope.salesInfo = null;
 			message.success('Article mis à jour. Ventes de l\'article : ' + response.data + ' ventes.');
-		}, function() {
-			loadingSpin.end();
 		});
 	}
 
 	$scope.addArticle = function() {
-		loadingSpin.start();
 		$scope.addingArticle = true;
 		$http({
 			method: 'POST',
@@ -238,14 +206,12 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 			data: $scope.newArticle
 		}).then(function(response) {
 			$scope.addingArticle = false;
-			loadingSpin.end();
 			$scope.createArticle = false;
 			$scope.newArticle.id = response.data.id;
 			$scope.perm.article_set.push(angular.copy($scope.newArticle));
 			$scope.newArticle = { perm: $routeParams.id, tva: 5.5 };
 			message.success('Article ' + $scope.newArticle.nom + ' bien ajouté à Picsous !');
 		}, function() {
-			loadingSpin.end();
 			$scope.addingArticle = false;
 		});
 	}

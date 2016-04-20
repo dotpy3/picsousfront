@@ -62,11 +62,12 @@ angular.module('picsousApp', [
 			redirectTo: '/'
 		});
 
-		$httpProvider.interceptors.push(function($q, message, APP_URL) {
+		$httpProvider.interceptors.push(function($q, message, APP_URL, loadingSpin) {
 			return {
 				request: function(config) {
-					if (config.url.search(APP_URL) !== '-1' && config.url.search('.html') === '-1') {
-						if (config.url.indexOf('?') !== '-1') {
+					loadingSpin.start();
+					if (config.url.search(APP_URL) !== '-1' && config.url.search('.html') !== '-1') {
+						if (config.url.indexOf('?') === '-1') {
 							config.url += '&randValue=' + Math.random()*10000000000000000000000;
 						} else {
 							config.url += '?randValue=' + Math.random()*10000000000000000000000;
@@ -75,7 +76,13 @@ angular.module('picsousApp', [
 					return config;
 				},
 
+				response: function(response) {
+					loadingSpin.end();
+					return response;
+				},
+
 				responseError: function(response) {
+					loadingSpin.end();
 					if (response.config.url.search('autocomplete') !== -1) {
 						return;
 					}

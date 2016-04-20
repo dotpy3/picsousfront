@@ -1,13 +1,6 @@
-angular.module('picsousApp').controller('FactureEmiseCtrl', function($http, $routeParams, message, objectStates, APP_URL, $scope, NgTableParams, loadingSpin) {
-	loadingSpin.start();
-	$http({
-		method: 'GET',
-		url: APP_URL + '/factureEmises/' + $routeParams.id,
-	}).then(function(response) {
+angular.module('picsousApp').controller('FactureEmiseCtrl', function($http, serverGetter, $routeParams, message, objectStates, APP_URL, $scope, NgTableParams) {
+	serverGetter.factureEmiseGetter($routeParams.id).then(function(response) {
 		$scope.facture = response.data;
-		loadingSpin.end();
-	}, function() {
-		loadingSpin.end();
 	});
 
 	$scope.app_url = APP_URL;

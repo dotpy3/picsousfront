@@ -1,5 +1,4 @@
-angular.module('picsousApp').controller('AllPermsCtrl', function($http, APP_URL, $scope, NgTableParams, loadingSpin) {
-	loadingSpin.start();
+angular.module('picsousApp').controller('AllPermsCtrl', function($scope, NgTableParams, serverGetter, objectStates) {
 	$scope.perms = [];
 	$scope.filters = {
 		traite: true,
@@ -8,15 +7,12 @@ angular.module('picsousApp').controller('AllPermsCtrl', function($http, APP_URL,
 	};
 	
 	var init = function() {
-		$http({method: 'GET', url: APP_URL + '/perms'}).then(function(response) {
+		serverGetter.permsGetter().then(function(response) {
 			$scope.perms = response.data;
 			$scope.perms.forEach(function(perm) {
 				perm.state = $scope.getState(perm);
 			})
 			$scope.loaded = true;
-			loadingSpin.end();
-		}, function() {
-			loadingSpin.end();
 		});
 	};
 
@@ -45,19 +41,8 @@ angular.module('picsousApp').controller('AllPermsCtrl', function($http, APP_URL,
 		return 'N';
 	};
 
-	$scope.stateLabel = function(state) {
-		if (state === 'T') return 'label-success';
-		if (state === 'V') return 'label-warning';
-		if (state === 'N') return 'label-danger';
-		return 'label-default';
-	};
-
-	$scope.stateString = function(state) {
-		if (state === 'T') return 'Traitée';
-		if (state === 'V') return 'Manque facture(s)';
-		if (state === 'N') return 'Non traitée';
-		return state;
-	};
+	$scope.stateLabel = objectStates.permStateLabel;
+	$scope.stateString = objectStates.permState;
 
 	init();
 });

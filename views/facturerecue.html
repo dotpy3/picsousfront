@@ -78,7 +78,7 @@
 				</td>
 
 				<td ng-show="changingPerm">
-					<select class="form-control" ng-model="facture.perm" ng-disabled="loadingPerms" ng-options="perm.id as perm.nom for perm in allPerms">
+					<select class="form-control" ng-model="facture.perm" ng-disabled="loadingPerms" ng-options="perm.id as perm.nomAndDate for perm in allPerms | orderBy:'nom'">
 					</select>
 					<button class="btn btn-xs btn-primary glyphicon glyphicon-ok" ng-click="saveChangingPerm()"></button> <button class="btn btn-xs btn-danger glyphicon glyphicon-remove" ng-click="cancelChangingPerm()"></button>
 				</td>

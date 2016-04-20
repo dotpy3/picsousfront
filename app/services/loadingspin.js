@@ -21,6 +21,9 @@ angular.module('picsousApp').factory('loadingSpin', function() {
 
 		end: function() {
 			this.value -= 1;
+			if (this.value < 0) {
+				this.value = 0;
+			}
 			this.update();
 		},
 	};

@@ -1,5 +1,19 @@
 angular.module('picsousApp').factory('objectStates', function() {
 	return {
+		permStateLabel: function(state) {
+			if (state === 'T') return 'label-success';
+			if (state === 'V') return 'label-warning';
+			if (state === 'N') return 'label-danger';
+			return 'label-default';
+		},
+
+		permState: function(state) {
+			if (state === 'T') return 'Traitée';
+			if (state === 'V') return 'Manque facture(s)';
+			if (state === 'N') return 'Non traitée';
+			return state;
+		},
+
 		factureEmiseState: function(state) {
 			if (state === 'D') return 'Dûe';
 			if (state === 'T') return 'Partiellement payée';

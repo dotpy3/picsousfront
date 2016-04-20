@@ -18,5 +18,4 @@ Interface de gestion de la trésorerie pour le Pic'Asso, foyer étudiant de l'Un
 ### Utile
 
 * Pouvoir calculer des stats sur les factures reçues pendant une certaine période
-* Par défaut : valeur de la date de la perm : aujourd'hui.
 * Dédoubler formulaire ajouter chèques/factures à la fin de la liste

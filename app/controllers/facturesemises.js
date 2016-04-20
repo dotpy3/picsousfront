@@ -1,4 +1,4 @@
-angular.module('picsousApp').controller('FacturesEmisesCtrl', function($http, $q, APP_URL, $scope, loadingSpin, message, objectStates, NgTableParams) {
+angular.module('picsousApp').controller('FacturesEmisesCtrl', function($http, $q, APP_URL, $scope, message, objectStates, NgTableParams) {
 	$scope.factureRowsInit = function() { $scope.newFactureRows = [{}]; };
 	$scope.factureRowsInit();
 
@@ -10,15 +10,11 @@ angular.module('picsousApp').controller('FacturesEmisesCtrl', function($http, $q
 	};
 
 	$scope.getFactures = function() {
-		loadingSpin.start();
 		$http({
 			method: 'GET',
 			url: APP_URL + '/factureEmises/'
 		}).then(function(response) {
 			$scope.factures = response.data;
-			loadingSpin.end();
-		}, function() {
-			loadingSpin.end();
 		});
 	};
 

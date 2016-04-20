@@ -1,4 +1,4 @@
-angular.module('picsousApp').controller('VATAnalysisCtrl', function($http, APP_URL, $scope, dateWrapper, message, loadingSpin) {
+angular.module('picsousApp').controller('VATAnalysisCtrl', function($http, APP_URL, $scope, dateWrapper, message) {
 	$http({
 		method: 'GET',
 		url: APP_URL + '/periodetva/'
@@ -31,7 +31,6 @@ angular.module('picsousApp').controller('VATAnalysisCtrl', function($http, APP_U
 			message.success('Période bien ajoutée !');
 			$scope.periods.push(response.data);
 			$scope.addingVatPeriod = false;
-		}, function() {
 		});
 	};
 

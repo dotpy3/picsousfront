@@ -1,4 +1,4 @@
-angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, APP_URL, $scope, tva, message, NgTableParams, dateWrapper, objectStates, loadingSpin) {
+angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, APP_URL, $scope, tva, message, NgTableParams, dateWrapper, objectStates) {
 	$scope.tva = tva;
 	$scope.factures = [];
 	$scope.filters = {
@@ -8,15 +8,11 @@ angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, AP
 		enattente: true,
 	};
 
-	loadingSpin.start();
 	$http({
 		method: 'GET',
 		url: APP_URL + '/facturesRecues/'
 	}).then(function(response) {
 		$scope.factures = response.data;
-		loadingSpin.end();
-	}, function() {
-		loadingSpin.end();
 	});
 
 	$scope.getFactures = function() {
@@ -134,7 +130,6 @@ angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, AP
 
 	$scope.sendState = function(fac) {
 		fac.updating = true;
-		loadingSpin.start();
 		$http({
 			method: 'PATCH',
 			url: APP_URL + '/facturesRecues/' + fac.id + '/',
@@ -145,11 +140,9 @@ angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, AP
 		}).then(function() {
 			fac.updating = false;
 			fac.modifyingState = false;
-			loadingSpin.end();
 			message.success('État de la facture modifié !');
 		}, function() {
 			fac.updating = false;
-			loadingSpin.end();
 		});
 	};
 
