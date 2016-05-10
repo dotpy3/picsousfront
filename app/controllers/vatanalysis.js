@@ -1,3 +1,7 @@
+'use strict';
+
+/* global confirm */
+
 angular.module('picsousApp').controller('VATAnalysisCtrl', function($http, APP_URL, $scope, dateWrapper, message) {
 	$http({
 		method: 'GET',
@@ -8,15 +12,23 @@ angular.module('picsousApp').controller('VATAnalysisCtrl', function($http, APP_U
 	$scope.newPeriod = {};
 
 	$scope.state = function(state) {
-		if (state === 'N') return 'Non déclarée';
-		if (state === 'D') return 'Déclarée';
+		if (state === 'N') {
+			return 'Non déclarée';
+		}
+		if (state === 'D') {
+			return 'Déclarée';
+		}
 		return state;
 	};
 
 	$scope.stateLabel = function(state) {
-		if (state === 'N') return 'label-danger';
-		if (state === 'D') return 'label-primary';
-		return 'label-default'
+		if (state === 'N') {
+			return 'label-danger';
+		}
+		if (state === 'D') {
+			return 'label-primary';
+		}
+		return 'label-default';
 	};
 
 	$scope.addPeriod = function() {

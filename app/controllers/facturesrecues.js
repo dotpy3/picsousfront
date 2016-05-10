@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, APP_URL, $scope, tva, message, NgTableParams, dateWrapper, objectStates) {
 	$scope.tva = tva;
 	$scope.factures = [];
@@ -6,6 +8,14 @@ angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, AP
 		arembourser: true,
 		apayer: true,
 		enattente: true,
+	};
+
+	function checkCategory(cat) {
+		if (cat.code.length > 1) {
+			message.error('Le code ne doit pas faire plus d\'un caractère.');
+			return false;
+		}
+		return true;
 	};
 
 	$http({
@@ -43,7 +53,9 @@ angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, AP
 	};
 
 	$scope.addCategory = function() {
-		if (!checkCategory($scope.newCategory)) return;
+		if (!checkCategory($scope.newCategory)) {
+			return;
+		}
 		$http({
 			method: 'POST',
 			data: $scope.newCategory,
@@ -54,21 +66,15 @@ angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, AP
 		});
 	};
 
-	function checkCategory(cat) {
-		if (cat.code.length > 1) {
-			message.error('Le code ne doit pas faire plus d\'un caractère.');
-			return false;
-		}
-		return true;
-	};
-
 	$scope.editCategory = function() {
-		if (!checkCategory($scope.editingCategory)) return;
+		if (!checkCategory($scope.editingCategory)) {
+			return;
+		}
 		$http({
 			method: 'PUT',
 			data: $scope.editingCategory,
 			url: APP_URL + '/categoriesFactureRecue/' + $scope.editingCategory.id + '/',
-		}).then(function(response) {
+		}).then(function() {
 			message.success('Catégorie bien modifiée !');
 		});
 	};

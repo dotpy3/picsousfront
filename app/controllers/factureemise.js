@@ -1,3 +1,7 @@
+'use strict';
+
+/* global confirm */
+
 angular.module('picsousApp').controller('FactureEmiseCtrl', function($http, serverGetter, $routeParams, message, objectStates, APP_URL, $scope, NgTableParams) {
 	serverGetter.factureEmiseGetter($routeParams.id).then(function(response) {
 		$scope.facture = response.data;
@@ -48,13 +52,13 @@ angular.module('picsousApp').controller('FactureEmiseCtrl', function($http, serv
 			$scope.facture = response.data;
 			$scope.modifyingFacture = false;
 			message.success('Facture modifiée !');
-		})
-	}
+		});
+	};
 
 	$scope.cancelModifyingFacture = function() {
 		$scope.facture = angular.copy($scope.oldFacture);
 		$scope.modifyingFacture = false;
-	}
+	};
 
 	$scope.modifyElement = function(el) {
 		el.old = angular.copy(el);
@@ -74,7 +78,7 @@ angular.module('picsousApp').controller('FactureEmiseCtrl', function($http, serv
 			method: 'PUT',
 			url: APP_URL + '/factureEmiseRows/' + el.id + '/',
 			data: data,
-		}).then(function(response) {
+		}).then(function() {
 			el.modifying = false;
 			message.success('Élément modifié !');
 		});

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('picsousApp').controller('AddPermCtrl', function($scope, APP_URL, message, $http, dateWrapper, $location, serverGetter){
 	$scope.perm = {};
 	$scope.gettingPerm = false;
@@ -13,7 +15,6 @@ angular.module('picsousApp').controller('AddPermCtrl', function($scope, APP_URL,
 	$scope.perm.date = dateAjd;
 
 	$scope.findPerm = function(item) {
-		var permInSearch = item;
 		$scope.permToFind = item.text;
 		$scope.gettingPerm = true;
 		serverGetter.permGetter(item.id).then(function(response) {
@@ -48,14 +49,18 @@ angular.module('picsousApp').controller('AddPermCtrl', function($scope, APP_URL,
 	};
 
 	$scope.typeahead = function(q) {
-		if (!q || q.length < 4) return;
+		if (!q || q.length < 4) {
+			return;
+		}
 		return serverGetter.userAutocompleteGetter(q).then(function(response){
 			return response.data;
 		});
 	};
 
 	$scope.typeaheadPermName = function(q) {
-		if (!q) return;
+		if (!q) {
+			return;
+		}
 		return serverGetter.permAutocompleteGetter(q).then(function(response) {
 			return response.data.results;
 		});

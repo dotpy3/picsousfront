@@ -1,5 +1,20 @@
+'use strict';
+
+/* global confirm */
+
 angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParams, dateWrapper, message, objectStates, tva, $http, $scope, $location, APP_URL) {
 	$scope.tva = tva;
+
+	var getFacturePerm = function() {
+		$http({
+			method: 'GET',
+			url: APP_URL + '/permnames/' + $scope.facture.perm + '/',
+		}).then(function(response) {
+			$scope.permName = response.data.nom;
+			var tDate = new Date(response.data.date);
+			$scope.permDate = dateWrapper.DateToSimpleStringDate(tDate);
+		});
+	};
 
 	var getFacture = function() {
 		$http({
@@ -45,45 +60,48 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 				id: $routeParams.id,
 				perm: $scope.facture.perm,
 			}
-		}).then(function(response) {
+		}).then(function() {
 			getFacturePerm();
 			message.success('Perm bien modifiée !');
 			$scope.changingPerm = false;
 		});
 	};
 
-	var getFacturePerm = function() {
-		$http({
-			method: 'GET',
-			url: APP_URL + '/permnames/' + $scope.facture.perm + '/',
-		}).then(function(response) {
-			$scope.permName = response.data.nom;
-			var tDate = new Date(response.data.date);
-			$scope.permDate = dateWrapper.DateToSimpleStringDate(tDate);
-		});
-	};
-
 	$scope.deleteFacture = function() {
-		if (!confirm('Voulez-vous vraiment supprimer cette facture ?')) return;
+		if (!confirm('Voulez-vous vraiment supprimer cette facture ?')) {
+			return;
+		}
 		$http({
 			method: 'GET',
 			url: APP_URL + '/deletefacturerecue/' + $routeParams.id + '/',
-		}).then(function(response) {
+		}).then(function() {
 			$location.path('/facturesrecues');
 		});
 	}
 
 	$scope.getChequeState = function(state) {
-		if (state === 'C') return 'Caution';
-		if (state === 'A') return 'Annulé';
-		if (state === 'E') return 'Encaissé';
+		if (state === 'C') {
+			return 'Caution';
+		}
+		if (state === 'A') {
+			return 'Annulé';
+		}
+		if (state === 'E') {
+			return 'Encaissé';
+		}
 		return state;
 	};
 
 	$scope.getChequeStateLabel = function(state) {
-		if (state === 'C') return 'label-default';
-		if (state === 'A') return 'label-warning';
-		if (state === 'E') return 'label-primary';
+		if (state === 'C') {
+			return 'label-default';
+		}
+		if (state === 'A') {
+			return 'label-warning';
+		}
+		if (state === 'E') {
+			return 'label-primary';
+		}
 		return 'label-primary';
 	};
 
@@ -94,7 +112,7 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 		$scope.modifyingFacture = false;
 	};
 
-	$scope.saveFacture = function(noVatChange) {
+	$scope.saveFacture = function() {
 		$scope.facture.tva = tva.getVATPercentageFromTTCAndVAT($scope.facture.prix, $scope.facture.new_vat);
 		var newFacture = angular.copy($scope.facture);
 		delete newFacture.new_tva;
@@ -116,7 +134,7 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 			url: APP_URL + '/cheques/',
 			data: $scope.newCheque
 		}).then(function(response) {
-			if (!scope.facture.cheque_set) {
+			if (!$scope.facture.cheque_set) {
 				$scope.facture.cheque_set = [];
 			}
 			$scope.facture.cheque_set.push(response.data);

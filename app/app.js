@@ -1,10 +1,15 @@
 'use strict';
 
 angular.module('picsousApp', [
+	'LocalStorageModule',
 	'ngRoute',
 	'ngTable',
 	'ui.bootstrap',
-	]).config(function($routeProvider, $httpProvider) {
+	]).config(function($routeProvider, $httpProvider, localStorageServiceProvider) {
+		localStorageServiceProvider.setPrefix('Picsous')
+			.setStorageType('sessionStorage')
+			.setNotify(false, false);
+		
 		var connectionCheck = function(casConnectionCheck) {
 			casConnectionCheck.check();
 		};
@@ -58,13 +63,21 @@ angular.module('picsousApp', [
 			templateUrl: 'views/cheques.html',
 			controller: 'ChequesCtrl',
 			reloadOnSearch: false,
+		}).when('/stats', {
+			templateUrl: 'views/stats.html',
+			controller: 'StatsCtrl',
+			reloadOnSearch: false,
 		}).otherwise({
 			redirectTo: '/'
 		});
 
-		$httpProvider.interceptors.push(function($q, message, APP_URL, loadingSpin) {
+		$httpProvider.interceptors.push(function($q, message, APP_URL, token, loadingSpin) {
 			return {
 				request: function(config) {
+					var requestToken = token.getToken();
+					if (requestToken) {
+						config.headers.Authorization = 'Token ' + token.getToken();
+					} 
 					loadingSpin.start();
 					if (config.url.search(APP_URL) !== '-1' && config.url.search('.html') !== '-1') {
 						if (config.url.indexOf('?') !== -1) {
@@ -87,7 +100,7 @@ angular.module('picsousApp', [
 						return;
 					}
 					if (response.data){
-						message.error((response.data.error ? (response.data.error.message || response.data.error.code) : false) || 'Une erreur est survenue.');
+						message.error(response.data.detail || (response.data.error ? (response.data.error.message || response.data.error.code) : false) || 'Une erreur est survenue.');
 					} else {
 						message.error('Impossible de se connecter au serveur.');
 					}

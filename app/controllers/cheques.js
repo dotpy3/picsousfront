@@ -1,3 +1,7 @@
+'use strict';
+
+/* global confirm */
+
 angular.module('picsousApp').controller('ChequesCtrl', function($scope, APP_URL, $http, objectStates, message, serverGetter) {
 	var loadCheques = function() {
 		serverGetter.chequesGetter().then(function(response) {
@@ -14,7 +18,7 @@ angular.module('picsousApp').controller('ChequesCtrl', function($scope, APP_URL,
 				id: cheque.id,
 				state: cheque.state,
 			}
-		}).then(function(response) {
+		}).then(function() {
 			message.success('État du chèque bien modifié !');
 			delete cheque.quickChange;
 			delete cheque.quicksave;
@@ -52,7 +56,7 @@ angular.module('picsousApp').controller('ChequesCtrl', function($scope, APP_URL,
 		$http({
 			method: 'DELETE',
 			url: APP_URL + '/cheques/' + $scope.modifiedCheque.id + '/',
-		}).then(function(response) {
+		}).then(function() {
 			$scope.cheques = $scope.cheques.filter(function(c) {
 				return c.id !== cheque.id;
 			});

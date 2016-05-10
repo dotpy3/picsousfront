@@ -1,43 +1,15 @@
-angular.module('picsousApp').factory('casConnectionCheck', function($routeParams, $http, APP_URL, $window, $location) {
+'use strict';
+
+angular.module('picsousApp').factory('casConnectionCheck', function($routeParams, $http, APP_URL, $window, token) {
 	var identity = null;
+	var gottenToken = null;
 	var rights = null;
 	var fuck = 'https://assos.utc.fr/picasso/fuck.html';
 
 	var CAS_URL = 'https://cas.utc.fr/cas/';
 
-	var logins = [
-		"abarrios",
-		"bmontang",
-		"bosijona",
-		"briviere",
-		"cgaraude",
-		"cgrebonv",
-		"daoudimo",
-		"echauvea",
-		"egourlao",
-		"fdesaind",
-		"ghillion",
-		"kohlerar",
-		"matheyal",
-		"mleriche",
-		"petitthe",
-		"prevelar",
-		"rothibau",
-		"schiniro",
-		"surichar",
-		"vcharbon"
-	];
-	var adminLogins = [
-		"mleriche",
-		"egourlao",
-		"rothibau",
-		"briviere",
-		"cgrebonv",
-		"echauvea",
-	];
-
 	var logged = function() {
-		return !!identity;
+		return rights !== null;
 	};
 
 	var getMyRights = function() {
@@ -48,7 +20,7 @@ angular.module('picsousApp').factory('casConnectionCheck', function($routeParams
 	};
 
 	var isUser = function(login) {
-		return logins.indexOf(login) !== -1;
+		return rights !== 'NONE';
 	};
 
 	var sendToFuck = function() {
@@ -57,6 +29,10 @@ angular.module('picsousApp').factory('casConnectionCheck', function($routeParams
 
 	var sendToCAS = function(originalUrl) {
 		$window.location.href = CAS_URL + '/login?service=' + originalUrl;
+	};
+	
+	var addToken = function() {
+		token.setToken(gottenToken);
 	};
 
 	var callRights = function() {
@@ -75,9 +51,9 @@ angular.module('picsousApp').factory('casConnectionCheck', function($routeParams
 						},
 					}).then(function(response) {
 						identity = response.data.success.login;
-						console.log(identity);
+						gottenToken = response.data.success.token;
+						addToken();
 					}, function() {
-						// should be sendToFuck when login properly works ...!!!!!!
 						sendToCAS(originalUrl);
 					});
 				} else {
@@ -100,21 +76,19 @@ angular.module('picsousApp').factory('casConnectionCheck', function($routeParams
 		check: check,
 
 		identify: function() { return identity; },
+		
+		token: function() { return token; },
 
 		disconnect: function() {
 			$window.location.href = 'https://cas.utc.fr/cas/logout';
 		},
 
 		isConnected: function() {
-			return !!identity;
+			return rights !== 'NONE' || !!identity;
 		},
 
 		isAdmin: function() {
-			if (identity === 'egourlao' || identity === 'briviere' || identity === 'cgrebonv' || identity === 'rothibau' || identity === 'mleriche' || identity === 'echauvea') {
-				return true;
-			} else {
-				return false;
-			}
+			return rights === 'ALL';
 		},
 	};
 });

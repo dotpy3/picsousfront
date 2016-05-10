@@ -72,7 +72,7 @@
 		<a href="" ng-click="sendJustificatif()" class="btn btn-block btn-success">Envoyer justificatif par mail</a>
 	</div>
 </div>
-<div class="row">
+<div class="row" ng-show="isAdmin()">
 	<div class="col-md-12">
 		<h3>Factures<button class="pull-right btn btn-primary" ng-click="addingFacture = !addingFacture"><i class="fa fa-plus"></i> Ajouter</button></h3>
 	</div>

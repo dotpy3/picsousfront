@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('picsousApp').controller('PermCtrl', function($routeParams, casConnectionCheck, objectStates, $http, APP_URL, $scope, message, dateWrapper) {
 	$scope.app_url = APP_URL;
 	$scope.categories = [];
@@ -7,16 +9,12 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 	};
 
 	$scope.totalSales = function() {
-		loadingSpin.start();
 		$scope.salesInfo = null;
 		$http({
 			method: 'GET',
 			url: APP_URL + '/permsales/' + $routeParams.id + '/',
 		}).then(function(response) {
 			$scope.salesInfo = response.data;
-			loadingSpin.end();
-		}, function() {
-			loadingSpin.end();
 		});
 	};;
 
@@ -34,22 +32,34 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 	$scope.factureRecueState = objectStates.factureRecueState;
 
 	$scope.stateLabel = function(state) {
-		if (state === 'T') return 'label-success';
-		if (state === 'V') return 'label-warning';
-		if (state === 'N') return 'label-danger';
+		if (state === 'T') {
+			return 'label-success';
+		}
+		if (state === 'V') {
+			return 'label-warning';
+		}
+		if (state === 'N') {
+			return 'label-danger';
+		}
 		return 'label-default';
 	};
 
 	$scope.stateString = function(state) {
-		if (state === 'T') return 'Traitée';
-		if (state === 'V') return 'Manque facture(s)';
-		if (state === 'N') return 'Non traitée';
+		if (state === 'T') {
+			return 'Traitée';
+		}
+		if (state === 'V') {
+			return 'Manque facture(s)';
+		}
+		if (state === 'N') {
+			return 'Non traitée';
+		}
 		return state;
 	};
 
 	$http({
 		method: 'GET',
-		url: APP_URL + '/perms/' + $routeParams.id,
+		url: APP_URL + '/perms/' + $routeParams.id + '/',
 	}).then(function(response) {
 		$scope.perm = response.data;
 		$scope.newArticle.perm = $scope.perm.id;
