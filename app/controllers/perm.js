@@ -149,12 +149,14 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 		return '';
 	};
 
-	$http({
-		method: 'GET',
-		url: APP_URL + '/categoriesFactureRecue/',
-	}).then(function(response) {
-		$scope.categories = response.data;
-	});
+	if (casConnectionCheck.isAdmin()) {
+		$http({
+			method: 'GET',
+			url: APP_URL + '/categoriesFactureRecue/',
+		}).then(function(response) {
+			$scope.categories = response.data;
+		});
+	}
 
 	$scope.addFacture = function() {
 		var newFacture = angular.copy($scope.newFacture);
@@ -186,7 +188,7 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 		article.addingToPayutc = true;
 		$http({
 			method: 'GET',
-			url: APP_URL + '/createpayutcarticle/' + article.id,
+			url: APP_URL + '/createpayutcarticle/' + article.id + '/',
 		}).then(function(response) {
 			article.id_payutc = response.data;
 			article.addingToPayutc = false;
