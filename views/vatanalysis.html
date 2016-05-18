@@ -72,14 +72,14 @@
 		<button class="btn btn-primary btn-block" ng-show="analyzedPeriod.state === 'N'" ng-click="considerDeclared(analyzedPeriod)">Considérer comme déclarée</button>
 	</div>
 	<DIV class="col-sm-4" ng-show="analysisUndergoing">
-		<div class="spinner">
-			<div class="dot1"></div>
-			<div class="dot2"></div>
+		<div class="spinner" id="vat-spinner">
+			<div class="dot1" id="vat-spinner-dot1"></div>
+			<div class="dot2" id="vat-spinner-dot2"></div>
 		</div>
 	</DIV>
 </div>
 <style>
-.spinner {
+#vat-spinner {
   margin: 100px auto;
   width: 40px;
   height: 40px;
@@ -90,7 +90,7 @@
   animation: sk-rotate 2.0s infinite linear;
 }
 
-.dot1, .dot2 {
+#vat-spinner-dot1, #vat-spinner-dot2 {
   width: 60%;
   height: 60%;
   display: inline-block;
@@ -103,7 +103,7 @@
   animation: sk-bounce 2.0s infinite ease-in-out;
 }
 
-.dot2 {
+#vat-spinner-dot2 {
   top: auto;
   bottom: 0;
   -webkit-animation-delay: -1.0s;

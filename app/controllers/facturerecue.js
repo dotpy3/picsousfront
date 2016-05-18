@@ -19,7 +19,7 @@ angular.module('picsousApp').controller('FactureRecueCtrl', function($routeParam
 	var getFacture = function() {
 		$http({
 			method: 'GET',
-			url: APP_URL + '/facturesRecues/' + $routeParams.id,
+			url: APP_URL + '/facturesRecues/' + $routeParams.id + '/',
 		}).then(function(response) {
 			$scope.facture = response.data;
 			$scope.facture.tva_complete = false;

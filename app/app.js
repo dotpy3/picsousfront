@@ -5,8 +5,8 @@ angular.module('picsousApp', [
 	'ngRoute',
 	'ngTable',
 	'ui.bootstrap',
-	]).config(function($routeProvider, $httpProvider, localStorageServiceProvider) {
-		localStorageServiceProvider.setPrefix('Picsous')
+	]).config(function($routeProvider, $httpProvider, localStorageServiceProvider, APP_URL) {
+		localStorageServiceProvider.setPrefix('Picsous' + APP_URL)
 			.setStorageType('sessionStorage')
 			.setNotify(false, false);
 		
@@ -39,34 +39,65 @@ angular.module('picsousApp', [
 			templateUrl: 'views/perm.html',
 			controller: 'PermCtrl',
 			reloadOnSearch: false,
+			resolve: {
+				resolveUser: connectionCheck
+			},
 		}).when('/facturesemises', {
 			templateUrl: 'views/facturesemises.html',
 			controller: 'FacturesEmisesCtrl',
 			reloadOnSearch: false,
+			resolve: {
+				resolveUser: connectionCheck
+			},
 		}).when('/factureemise/:id', {
 			templateUrl: 'views/factureemise.html',
 			controller: 'FactureEmiseCtrl',
 			reloadOnSearch: false,
+			resolve: {
+				resolveUser: connectionCheck
+			},
 		}).when('/facturesrecues', {
 			templateUrl: 'views/facturesrecues.html',
 			controller: 'FacturesRecuesCtrl',
 			reloadOnSearch: false,
+			resolve: {
+				resolveUser: connectionCheck
+			},
 		}).when('/facturesrecues/:id', {
 			templateUrl: 'views/facturerecue.html',
 			controller: 'FactureRecueCtrl',
 			reloadOnSearch: false,
+			resolve: {
+				resolveUser: connectionCheck
+			},
 		}).when('/analyse', {
 			templateUrl: 'views/vatanalysis.html',
 			controller: 'VATAnalysisCtrl',
 			reloadOnSearch: false,
+			resolve: {
+				resolveUser: connectionCheck
+			},
 		}).when('/cheques', {
 			templateUrl: 'views/cheques.html',
 			controller: 'ChequesCtrl',
 			reloadOnSearch: false,
+			resolve: {
+				resolveUser: connectionCheck
+			},
 		}).when('/stats', {
 			templateUrl: 'views/stats.html',
 			controller: 'StatsCtrl',
 			reloadOnSearch: false,
+			resolve: {
+				resolveUser: connectionCheck
+			},
+		}).when('/backoffice', {
+			templateUrl: 'views/backoffice.html',
+			controller: 'BackofficeCtrl',
+			reloadOnSearch: false,
+			resolve: {
+				resolveUser: connectionCheck
+			},
 		}).otherwise({
 			redirectTo: '/'
 		});

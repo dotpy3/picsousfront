@@ -25,7 +25,7 @@
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
-		        <li ng-show="cas.isConnected()" class="dropdown">
+		        <li ng-show="cas.isConnected() && cas.isUser()" class="dropdown">
 		          <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Perms <span class="caret"></span></a>
 		          <ul class="dropdown-menu">
 		            <li><a href="#/addperm"><i class="fa fa-fw fa-plus"></i> Rentrer une perm</a></li>
@@ -44,6 +44,7 @@
 		          </ul>
 		        </li>
 		        <li ng-show="cas.isAdmin()"><a href="#/analyse"><i class="fa fa-fw fa-bank"></i> Analyse TVA</a></li>
+						<li ng-show="cas.isAdmin()"><a href="#/backoffice"><i class="fa fa-fw fa-gears"></i> Administration</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
 		      	<li><a href="https://cas.utc.fr/cas/logout">Déconnexion</a></li>
@@ -75,6 +76,7 @@
 	<script src="app/config.js"></script>
 	<script src="app/controllers/home.js"></script>
 	<script src="app/controllers/allperms.js"></script>
+	<script src="app/controllers/backoffice.js"></script>
 	<script src="app/controllers/bugfound.js"></script>
 	<script src="app/controllers/cheques.js"></script>
 	<script src="app/controllers/addperm.js"></script>

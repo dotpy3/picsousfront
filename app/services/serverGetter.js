@@ -1,15 +1,29 @@
+'use strict';
+
 angular.module('picsousApp').factory('serverGetter', function(APP_URL, $http) {
+	
+	function modelRoute(route) {
+		return APP_URL + '/' + route + '/';
+	}
+	
+	function unitRoute(route, id) {
+		return APP_URL + '/' + route + '/' + id + '/';
+	}
 
 	function genericRESTListGetter(route) {
 		return function() {
-			return $http({ method: 'GET', url: APP_URL + '/' + route + '/' });
+			return $http({ method: 'GET', url: modelRoute(route) });
 		};
 	}
 
 	function genericRESTUnitGetter(route) {
 		return function(id) {
-			return $http({ method: 'GET', url: APP_URL + '/' + route + '/' + id });
+			return $http({ method: 'GET', url: unitRoute(route, id) });
 		};
+	}
+	
+	function genericRESTUnitPoster(route) {
+		
 	}
 
 	return {
