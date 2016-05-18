@@ -85,7 +85,9 @@
                 </td>
             </tr>
             <tr>
-                <td><input type="text" class="form-control" ng-model="newUser.login" /></td>
+                <td>
+                    <input type="text" class="form-control" ng-model="newUser.login" typeahead-on-select="addUserLogin($item)" uib-typeahead="user.name for user in typeahead($viewValue)" />
+                </td>
                 <td><div class="form-group col-xs-8">
                         <select class="form-control" ng-model="newUser.right">
                             <option value="N">Aucun droit</option>

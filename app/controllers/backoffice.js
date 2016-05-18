@@ -59,6 +59,10 @@ angular.module('picsousApp').controller('BackofficeCtrl', function($http, $scope
 		});
 	};
     
+    $scope.addUserLogin = function(q) {
+        $scope.newUser.login = q.name.split('(')[1].split(')')[0];
+    };
+    
     $scope.findUser = function(q) {
         var login = q.name.split('(')[1].split(')')[0];
         $scope.searchingBadge = true;
