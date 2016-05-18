@@ -44,6 +44,7 @@
 		          </ul>
 		        </li>
 		        <li ng-show="cas.isAdmin()"><a href="#/analyse"><i class="fa fa-fw fa-bank"></i> Analyse TVA</a></li>
+						<li ng-show="cas.isAdmin()"><a href="#/backoffice"><i class="fa fa-fw fa-gears"></i> Administration</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
 		      	<li><a href="https://cas.utc.fr/cas/logout">Déconnexion</a></li>
@@ -70,12 +71,12 @@
 	<script src="bower_components/angular-route/angular-route.min.js"></script>
 	<script src="bower_components/ng-table/dist/ng-table.min.js"></script>
 	<script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
-	<script src="bower_components/angular-md5/angular-md5.min.js"></script>
 
 	<script src="app/app.js"></script>
 	<script src="app/config.js"></script>
 	<script src="app/controllers/home.js"></script>
 	<script src="app/controllers/allperms.js"></script>
+	<script src="app/controllers/backoffice.js"></script>
 	<script src="app/controllers/bugfound.js"></script>
 	<script src="app/controllers/cheques.js"></script>
 	<script src="app/controllers/addperm.js"></script>

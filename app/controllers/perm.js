@@ -201,7 +201,7 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 	$scope.updateArticle = function(article) {
 		return $http({
 			method: 'GET',
-			url: APP_URL + '/updatearticle/' + article.id,
+			url: APP_URL + '/updatearticle/' + article.id + '/',
 		}).then(function(response) {
 			article.ventes = response.data;
 			article.ventes_last_update = new Date();

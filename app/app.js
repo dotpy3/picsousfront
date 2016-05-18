@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('picsousApp', [
-	'angular-md5',
 	'LocalStorageModule',
 	'ngRoute',
 	'ngTable',
@@ -88,6 +87,13 @@ angular.module('picsousApp', [
 		}).when('/stats', {
 			templateUrl: 'views/stats.html',
 			controller: 'StatsCtrl',
+			reloadOnSearch: false,
+			resolve: {
+				resolveUser: connectionCheck
+			},
+		}).when('/backoffice', {
+			templateUrl: 'views/backoffice.html',
+			controller: 'BackofficeCtrl',
 			reloadOnSearch: false,
 			resolve: {
 				resolveUser: connectionCheck
