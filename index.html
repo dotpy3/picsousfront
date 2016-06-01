@@ -47,7 +47,9 @@
 						<li ng-show="cas.isAdmin()"><a href="#/backoffice"><i class="fa fa-fw fa-gears"></i> Administration</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
-		      	<li><a href="https://cas.utc.fr/cas/logout">Déconnexion</a></li>
+						<li><a href="" ng-click="superadmin.removeSuperadmin()" ng-show="cas.isAdmin() && superadmin.isActive()"><i class="fa fa-fw fa-check"></i> Retour mode normal</a></li>
+						<li><a href="" ng-click="superadmin.setSuperadmin()" ng-show="cas.isAdmin() && !superadmin.isActive() && superadmin.isShowable()"><i class="fa fa-fw fa-warning"></i> Activer mode admin</a></li>
+		      	<li><a ng-click="logout()" ng-show="cas.isConnected()"><i class="fa fa-fw fa-power-off"></i> Déconnexion</a></li>
 		        <li id="loading-spinner" style="display: none;">
 			        <div class="spinner spinner-navbar">
 					  <div class="bounce1"></div>
@@ -71,6 +73,7 @@
 	<script src="bower_components/angular-route/angular-route.min.js"></script>
 	<script src="bower_components/ng-table/dist/ng-table.min.js"></script>
 	<script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
+	<script src="bower_components/angular-ui-mask/dist/mask.min.js"></script>
 
 	<script src="app/app.js"></script>
 	<script src="app/config.js"></script>
@@ -96,4 +99,5 @@
 	<script src="app/services/casconnectioncheck.js"></script>
 	<script src="app/services/objectStates.js"></script>
 	<script src="app/services/serverGetter.js"></script>
+	<script src="app/services/superadmin.js"></script>
 </html>

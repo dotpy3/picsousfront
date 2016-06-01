@@ -1,11 +1,12 @@
 'use strict';
 
-angular.module('picsousApp').controller('BackofficeCtrl', function($http, $scope, APP_URL, message, serverGetter) {
+angular.module('picsousApp').controller('BackofficeCtrl', function($http, $scope, APP_URL, message, serverGetter, superadmin) {
     $scope.settings = {};
     $scope.users = [];
     $scope.newUser = {
         right: 'P',
     };
+    $scope.superadmin = superadmin;
     
     var newSettings = function(response) {
         for (var val in response.data) {
@@ -81,8 +82,8 @@ angular.module('picsousApp').controller('BackofficeCtrl', function($http, $scope
     
     $scope.giveRight = function(user, right) {
         user.changingRight = true;
-        $http({ method: 'PATCH', url: APP_URL + '/userright/' + user.id + '/', data: {
-            id: user.id, right: right
+        $http({ method: 'PUT', url: APP_URL + '/userright/' + user.id + '/', data: {
+            id: user.id, right: right, login: user.login
         }}).then(function(response) {
             user.right = response.data.right;
             user.changingRight = false;

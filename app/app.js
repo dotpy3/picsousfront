@@ -5,6 +5,7 @@ angular.module('picsousApp', [
 	'ngRoute',
 	'ngTable',
 	'ui.bootstrap',
+	'ui.mask',
 	]).config(function($routeProvider, $httpProvider, localStorageServiceProvider, APP_URL) {
 		localStorageServiceProvider.setPrefix('Picsous' + APP_URL)
 			.setStorageType('sessionStorage')

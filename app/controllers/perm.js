@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('picsousApp').controller('PermCtrl', function($routeParams, casConnectionCheck, objectStates, $http, APP_URL, $scope, message, dateWrapper) {
+angular.module('picsousApp').controller('PermCtrl', function($routeParams, casConnectionCheck, objectStates, $http, APP_URL, $scope, message, dateWrapper, superadmin) {
 	$scope.app_url = APP_URL;
 	$scope.categories = [];
+	$scope.superadmin = superadmin;
 
 	$scope.isAdmin = function() {
 		return casConnectionCheck.isAdmin();
@@ -26,6 +27,51 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 			return 'V';
 		}
 		return 'N';
+	};
+	
+	$scope.simpleModification = function(article) {
+		article.old = angular.copy(article);
+		article.simpleModifying = true;
+	};
+	
+	$scope.hardModification = function(article) {
+		article.hardModifying = true;
+		if (!article.simpleModifying) {
+			$scope.simpleModification(article);
+		}
+	};
+	
+	$scope.cancelSavingArticle = function(article) {
+		angular.extend(article, article.old);
+		delete article.old;
+		delete article.simpleModifying;
+		delete article.hardModifying;
+	};
+	
+	$scope.savingArticle = function(article, hardModifications) {
+		var data = {
+			nom: article.nom,
+			prix: article.prix,
+			tva: article.tva,
+		};
+		if (hardModifications)  {
+			data.id_payutc = article.id_payutc;
+			data.ventes = article.ventes;
+			data.ventes_last_update = (new Date()).toString();
+		}
+		$http({
+			method: 'PATCH',
+			url: APP_URL + '/articles/' + article.id + '/',
+			data: data,
+		}).success(function(response) {
+			angular.extend(article, response.data);
+			delete article.old;
+			delete article.simpleModifying;
+			if (hardModifications) {
+				delete article.hardModifying;
+			}
+			message.success('Article bien modifié !');
+		});
 	};
 
 	$scope.factureRecueStateLabel = objectStates.factureRecueStateLabel;

@@ -25,7 +25,7 @@
                     </div>
                     <div class="form-group col-sm-4">
                         <label>Code PIN de l'utilisateur</label>
-                        <input type="number" ng-model="settings.NEMOPAY_CONNECTION_PIN.value" ng-change="settings.NEMOPAY_CONNECTION_PIN.changed = true" class="form-control" />
+                        <input type="password" ng-model="settings.NEMOPAY_CONNECTION_PIN.value" ng-change="settings.NEMOPAY_CONNECTION_PIN.changed = true" class="form-control" />
                     </div>
                 </form>
             </div>
@@ -59,6 +59,14 @@
             </div>
         </div>
         <button ng-disabled="savingSettings" ng-click="saveSettings()" class="btn btn-primary btn-block">Sauvegarder</button>
+    </div>
+    <div class="col-md-6">
+        <h2>Mode admin</h2>
+        <div class="alert-info alert">
+            <p>Ce mode vous permet de forcer la modification de données sensibles. Cliquer sur ce bouton vous permet d'avoir accès temporairement à ce mode sur cette machine.</p>
+        </div>
+        <button class="btn btn-lg btn-danger btn-block" ng-click="superadmin.setShowable(true)" ng-hide="superadmin.isShowable()">Autoriser le mode admin</button>
+        <button class="btn btn-lg btn-primary btn-block" ng-click="superadmin.setShowable(false)" ng-show="superadmin.isShowable()">Désactiver le mode admin</button>
     </div>
     <div class="col-md-6">
         <h2>Utilisateurs</h2>
