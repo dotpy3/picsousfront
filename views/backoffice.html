@@ -79,12 +79,13 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Login</th>
+                    <th>Utilisateur</th>
                     <th>Droits</th>
                 </tr>
             </thead>
             <tr ng-repeat="user in users">
-                <td>{{user.login}}</td>
+                <td ng-hide="user.name">{{user.login}}</td>
+                <td ng-show="user.name">{{user.name}} (<i>{{user.login}}</i>)</td>
                 <td>
                     <button ng-disabled="user.changingRight" ng-click="giveRight(user, 'A')" ng-show="user.right === 'P'" class="btn btn-primary">Nommer Admin</button>
                     <button ng-disabled="user.changingRight" ng-click="giveRight(user, 'P')" ng-show="user.right === 'A'" class="btn btn-warning">Rétrograder User</button>
@@ -94,7 +95,7 @@
             </tr>
             <tr>
                 <td>
-                    <input type="text" class="form-control" ng-model="newUser.login" typeahead-on-select="addUserLogin($item)" uib-typeahead="user.name for user in typeahead($viewValue)" />
+                    <input type="text" class="form-control" placeholder="Nom de l'étudiant.e..." ng-model="newUser.login" typeahead-on-select="addUserLogin($item)" uib-typeahead="user.name for user in typeahead($viewValue)" />
                 </td>
                 <td><div class="form-group col-xs-8">
                         <select class="form-control" ng-model="newUser.right">

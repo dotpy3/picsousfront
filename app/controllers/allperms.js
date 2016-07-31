@@ -1,4 +1,6 @@
-'use strict';
+(function(){
+	'use strict';
+}());
 
 angular.module('picsousApp').controller('AllPermsCtrl', function($scope, NgTableParams, serverGetter, objectStates) {
 	$scope.perms = [];

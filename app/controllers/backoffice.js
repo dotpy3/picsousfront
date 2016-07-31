@@ -21,7 +21,7 @@ angular.module('picsousApp').controller('BackofficeCtrl', function($http, $scope
         $http({ method: 'GET', url: APP_URL + '/getAdminSettings' }).then(newSettings);
         
         $http({
-            method: 'GET', url: APP_URL + '/userright/',
+            method: 'GET', url: APP_URL + '/getUserList',
         }).then(function(response) {
             $scope.users = response.data;
         });

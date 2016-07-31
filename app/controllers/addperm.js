@@ -1,4 +1,6 @@
-'use strict';
+(function(){
+	'use strict';
+}());
 
 angular.module('picsousApp').controller('AddPermCtrl', function($scope, APP_URL, message, $http, dateWrapper, $location, serverGetter){
 	$scope.perm = {};
