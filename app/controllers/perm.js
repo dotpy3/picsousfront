@@ -54,14 +54,16 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 			prix: article.prix,
 			tva: article.tva,
 		};
+		var endpoint = 'articles';
 		if (hardModifications)  {
 			data.id_payutc = article.id_payutc;
-			data.ventes = article.ventes;
-			data.ventes_last_update = (new Date()).toString();
+			data.ventes = parseInt(article.ventes);
+			data.ventes_last_update = new Date();
+			endpoint += 'Admin';
 		}
 		$http({
 			method: 'PATCH',
-			url: APP_URL + '/articles/' + article.id + '/',
+			url: APP_URL + '/' + endpoint + '/' + article.id + '/',
 			data: data,
 		}).success(function(response) {
 			angular.extend(article, response.data);
