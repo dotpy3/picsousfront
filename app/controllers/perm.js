@@ -58,7 +58,6 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 		if (hardModifications)  {
 			data.id_payutc = article.id_payutc;
 			data.ventes = parseInt(article.ventes);
-			data.ventes_last_update = new Date();
 			endpoint += 'Admin';
 		}
 		$http({
