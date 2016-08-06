@@ -19,6 +19,10 @@ angular.module('picsousApp').controller('NavCtrl', function($scope, casConnectio
 	$scope.resetSemester = function() { semester.setSemester(null); };
 	$scope.setSemester = function(givenSemester) { semester.setSemester(givenSemester.id); };
 
+	$scope.semester = function() {
+		return semester.currentSemester();
+	};
+
 	$scope.getSemesters = function() {
 		return semester.allSemesters;
 	};
@@ -30,11 +34,11 @@ angular.module('picsousApp').controller('NavCtrl', function($scope, casConnectio
 	$scope.semesterText = function() {
 		switch (semester.currentSemester()) {
 			case 'all':
-			return 'Tous les semestres';
+			return 'Archives - Tous les semestres';
 			case null:
-			return 'Semestre par défaut';
+			return 'Accéder aux archives';
 			default:
-			return semester.currentSemesterName(semester.currentSemester());
+			return 'Archives - ' + semester.currentSemesterName(semester.currentSemester());
 		}
 	};
 });

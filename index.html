@@ -50,9 +50,9 @@
 						<li ng-show="cas.isAdmin()" class="dropdown">
 							<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ semesterText() }} <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a href="" ng-click="showAllSemesters()">Tous les semestres</a></li>
-								<li><a href="" ng-click="resetSemester()">Revenir au semestre par défaut</a></li>
-								<li class="dropdown-header">Semestres</li>
+								<li><a href="" ng-click="showAllSemesters()">Archives complètes</a></li>
+								<li><a href="" ng-click="resetSemester()" ng-show="semester()">Quitter les archives</a></li>
+								<li class="dropdown-header">Archives par semestre</li>
 								<li ng-repeat="semester in getSemesters()"><a href="" ng-click="setSemester(semester)">{{ semesterName(semester) }}</a></li>
 							</ul>
 						</li>

@@ -65,7 +65,7 @@ angular.module('picsousApp').factory('serverGetter', function(APP_URL, $http, se
 		categoriesGetter: genericRESTListGetter('categoriesFactureRecue'),
 		// Permet d'obtenir la liste des catégories de factures reçues
 
-		facturesEmisesGetter: genericRESTListGetter('facturesEmises', true),
+		facturesEmisesGetter: genericRESTListGetter('factureEmises', true),
 		// Permet d'obtenir la liste des factures émises
 
 		factureEmiseGetter: genericRESTUnitGetter('factureEmises', true),

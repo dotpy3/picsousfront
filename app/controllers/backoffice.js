@@ -7,6 +7,21 @@ angular.module('picsousApp').controller('BackofficeCtrl', function($http, $scope
         right: 'P',
     };
     $scope.superadmin = superadmin;
+
+    function newEmptySemester() {
+        $scope.newSemester = { annee: (new Date()).getFullYear() };
+    }
+    newEmptySemester();
+
+    $scope.createSemester = function() {
+        $http({ method: 'POST', url: APP_URL + '/semester/', data: $scope.newSemester }).then(function(response) {
+            message.success('Semestre bien créé !');
+            giveAbreviation(response.data);
+            semester.allSemesters.push(response.data);
+            $scope.semesters.push(response.data);
+            newEmptySemester();
+        });
+    };
     
     var newSettings = function(response) {
         for (var val in response.data) {
@@ -118,12 +133,14 @@ angular.module('picsousApp').controller('BackofficeCtrl', function($http, $scope
 
     // Getting the semesters list and incorporating it in the view
 
+    var giveAbreviation = function(s) {
+        s.abreviation = semester.semesterName(s.periode) + ' ' + s.annee.toString();
+    };
+
     serverGetter.semesterGetter().then(function(response) {
         // Adding the semesters to scope
         $scope.semesters = response.data;
         // Adding the semesters abreviation to each semester object
-        $scope.semesters.forEach(function(s) {
-            s.abreviation = semester.semesterName(s.periode) + ' ' + s.annee.toString();
-        });
+        $scope.semesters.forEach(giveAbreviation);
     });
 });
