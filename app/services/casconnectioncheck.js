@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('picsousApp').factory('casConnectionCheck', function($routeParams, $http, APP_URL, $window, token) {
+angular.module('picsousApp').factory('casConnectionCheck', function($routeParams, $http, APP_URL, $window, token, $q) {
 	/*
 		Module de gestion de la connexion de l'utilisateur
 	*/
@@ -23,10 +23,14 @@ angular.module('picsousApp').factory('casConnectionCheck', function($routeParams
 	var getMyRights = function() {
 		/* Fonction interrogant le serveur pour savoir si l'utilisateur
 		est authentifié - retourne la promesse $http */
-		return $http({
-			url: APP_URL + '/getmyrights',
-			method: 'GET'
-		});
+		if (logged()) {
+			return $q.all();
+		} else {
+			return $http({
+				url: APP_URL + '/getmyrights',
+				method: 'GET'
+			});
+		}
 	};
 
 	var isUser = function() {
@@ -62,47 +66,46 @@ angular.module('picsousApp').factory('casConnectionCheck', function($routeParams
 					- Si l'authentification échoue, on redirige l'utilisateur vers la page fuck.
 				- Si l'utilisateur ne vient pas du CAS, on le redirige vers le CAS.
 		*/
-		return getMyRights().then(function(response) {
-			if (response.data === 'NOT CONNECTED') {
-				// Utilisateur pas connecté
-				var tick = $window.location.href.split('ticket=');
-				var originalUrl = $window.location.href.split('#')[0].split('?')[0];
-				if (tick.length > 1) {
-					tick = tick[1].split('#')[0].split('&')[0];
-					$http({
-						method: 'POST',
-						url: APP_URL + '/connexion',
-						data: {
-							ticket: tick,
-							service: originalUrl,
-						},
-					}).then(function(response) {
-						identity = response.data.success.login;
-						addToken(response.data.success.token);
-						callRights();
-					}, function() {
-						sendToFuck();
-					});
+		return $q(function(resolve, failPromise) {
+			getMyRights().then(function(response) {
+				if (response.data === 'NOT CONNECTED') {
+					// Utilisateur pas connecté
+					var tick = $window.location.href.split('ticket=');
+					var originalUrl = $window.location.href.split('#')[0].split('?')[0];
+					if (tick.length > 1) {
+						tick = tick[1].split('#')[0].split('&')[0];
+						$http({
+							method: 'POST',
+							url: APP_URL + '/connexion',
+							data: {
+								ticket: tick,
+								service: originalUrl,
+							},
+						}).then(function(connectionResponse) {
+							identity = connectionResponse.data.success.login;
+							addToken(connectionResponse.data.success.token);
+							callRights();
+							resolve(connectionResponse);
+						}, function() {
+							sendToFuck();
+							failPromise();
+						});
+					} else {
+						sendToCAS(originalUrl);
+						failPromise();
+					}
 				} else {
-					sendToCAS(originalUrl);
+					// Utilisateur connecté : on sauvegarde ses droits
+					rights = response.data;
+					resolve(rights);
 				}
-			} else {
-				// Utilisateur connecté : on sauvegarde ses droits
-				rights = response.data;
-			}
+			});
 		});
 	};
 
-	var check = function() {
-		if (identity) {
-			return true;
-		}
-		callRights();
-	};
+	var searchPromise = callRights();
 
 	return {
-		check: check,
-
 		identify: function() { return identity; },
 		
 		token: function() { return token; },
@@ -122,5 +125,7 @@ angular.module('picsousApp').factory('casConnectionCheck', function($routeParams
 		isUser: function() {
 			return isUser();
 		},
+
+		searchPromise: function() { return searchPromise; },
 	};
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('picsousApp').controller('FacturesEmisesCtrl', function($http, $q, APP_URL, $scope, message, objectStates, NgTableParams) {
+angular.module('picsousApp').controller('FacturesEmisesCtrl', function($http, $q, APP_URL, $scope, message, objectStates, NgTableParams, serverGetter) {
 	$scope.factureRowsInit = function() { $scope.newFactureRows = [{}]; };
 	$scope.factureRowsInit();
 
@@ -12,10 +12,7 @@ angular.module('picsousApp').controller('FacturesEmisesCtrl', function($http, $q
 	};
 
 	$scope.getFactures = function() {
-		$http({
-			method: 'GET',
-			url: APP_URL + '/factureEmises/'
-		}).then(function(response) {
+		serverGetter.facturesEmisesGetter().then(function(response) {
 			$scope.factures = response.data;
 		});
 	};

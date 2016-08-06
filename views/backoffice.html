@@ -44,6 +44,16 @@
                 </form>
             </div>
             <div class="col-md-12 col-sm-6">
+                <h3>Semestre en cours</h3>
+                <div class="alert-info alert">
+                    <p>Ce menu vous permet de choisir le semestre en cours, c'est à dire le semestre qui apparaîtra aux utilisateurs de Picsous.<br />
+                    A partir du moment où vous changez un semestre, les perms des autres semestres n'apparaîtront plus aux utilisateurs de Picsous - pour les administrateurs, le système n'affichera par défaut que les factures du semestre en cours. Ils peuvent cependant naviguer entre les semestres grâce au menu déroulant en haut de l'écran.</p>
+                    <p><strong>Ne changez pas de semestre si vous souhaitez juste consulter les informations d'un semestre !</strong> Pour cela, utilisez le menu déroulant.</p>
+                </div>
+                <select class="form-control" ng-options="semester.id as semester.abreviation for semester in semesters" ng-change="settings.SEMESTER.changed = true" ng-model="settings.SEMESTER.value">
+                </select>
+            </div>
+            <div class="col-md-12 col-sm-6">
                 <h3>API PayUTC</h3>
                 <div class="alert alert-info">Ces paramètres permettent de définir la connexion au serveur PayUTC.</div>
                 <form>

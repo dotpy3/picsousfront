@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('picsousApp').controller('PermCtrl', function($routeParams, casConnectionCheck, objectStates, $http, APP_URL, $scope, message, dateWrapper, superadmin) {
+angular.module('picsousApp').controller('PermCtrl', function($routeParams, casConnectionCheck, objectStates, $http, APP_URL, $scope, message, dateWrapper, superadmin, serverGetter) {
 	$scope.app_url = APP_URL;
 	$scope.categories = [];
 	$scope.superadmin = superadmin;
@@ -104,10 +104,7 @@ angular.module('picsousApp').controller('PermCtrl', function($routeParams, casCo
 		return state;
 	};
 
-	$http({
-		method: 'GET',
-		url: APP_URL + '/perms/' + $routeParams.id + '/',
-	}).then(function(response) {
+	serverGetter.permGetter($routeParams.id).then(function(response) {
 		$scope.perm = response.data;
 		$scope.newArticle.perm = $scope.perm.id;
 		$scope.perm.state = $scope.getState($scope.perm);

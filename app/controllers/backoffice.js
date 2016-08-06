@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('picsousApp').controller('BackofficeCtrl', function($http, $scope, APP_URL, message, serverGetter, superadmin) {
+angular.module('picsousApp').controller('BackofficeCtrl', function($http, $scope, APP_URL, message, semester, serverGetter, superadmin) {
     $scope.settings = {};
     $scope.users = [];
     $scope.newUser = {
@@ -115,4 +115,15 @@ angular.module('picsousApp').controller('BackofficeCtrl', function($http, $scope
     };
     
     getSettings();
+
+    // Getting the semesters list and incorporating it in the view
+
+    serverGetter.semesterGetter().then(function(response) {
+        // Adding the semesters to scope
+        $scope.semesters = response.data;
+        // Adding the semesters abreviation to each semester object
+        $scope.semesters.forEach(function(s) {
+            s.abreviation = semester.semesterName(s.periode) + ' ' + s.annee.toString();
+        });
+    });
 });

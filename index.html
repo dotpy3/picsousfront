@@ -47,6 +47,15 @@
 						<li ng-show="cas.isAdmin()"><a href="#/backoffice"><i class="fa fa-fw fa-gears"></i> Administration</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
+						<li ng-show="cas.isAdmin()" class="dropdown">
+							<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ semesterText() }} <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="" ng-click="showAllSemesters()">Tous les semestres</a></li>
+								<li><a href="" ng-click="resetSemester()">Revenir au semestre par défaut</a></li>
+								<li class="dropdown-header">Semestres</li>
+								<li ng-repeat="semester in getSemesters()"><a href="" ng-click="setSemester(semester)">{{ semesterName(semester) }}</a></li>
+							</ul>
+						</li>
 						<li><a href="" ng-click="superadmin.removeSuperadmin()" ng-show="cas.isAdmin() && superadmin.isActive()"><i class="fa fa-fw fa-check"></i> Retour mode normal</a></li>
 						<li><a href="" ng-click="superadmin.setSuperadmin()" ng-show="cas.isAdmin() && !superadmin.isActive() && superadmin.isShowable()"><i class="fa fa-fw fa-warning"></i> Activer mode admin</a></li>
 		      	<li><a ng-click="logout()" ng-show="cas.isConnected()"><i class="fa fa-fw fa-power-off"></i> Déconnexion</a></li>
@@ -92,6 +101,7 @@
 	<script src="app/controllers/vatanalysis.js"></script>
 	<script src="app/controllers/stats.js"></script>
 	<script src="app/services/tva.js"></script>
+	<script src="app/services/semester.js"></script>
 	<script src="app/services/token.js"></script>
 	<script src="app/services/message.js"></script>
 	<script src="app/services/dateWrapper.js"></script>
