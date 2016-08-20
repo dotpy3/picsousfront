@@ -2,7 +2,9 @@
 
 /* global confirm */
 
-angular.module('picsousApp').controller('ChequesCtrl', function($scope, APP_URL, $http, objectStates, message, serverGetter) {
+angular.module('picsousApp').controller('ChequesCtrl', function ($scope, casConnectionCheck, APP_URL, $http, objectStates, message, serverGetter) {
+  $scope.cas = casConnectionCheck
+  $scope.chequesUrl = APP_URL + '/generate/cheques'
 	var loadCheques = function() {
 		serverGetter.chequesGetter().then(function(response) {
 			$scope.cheques = response.data;

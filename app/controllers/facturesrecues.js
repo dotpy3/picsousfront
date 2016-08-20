@@ -1,46 +1,48 @@
-'use strict';
+'use strict'
 
-angular.module('picsousApp').controller('FacturesRecuesCtrl', function($http, APP_URL, $scope, tva, message, NgTableParams, dateWrapper, objectStates) {
-	$scope.tva = tva;
-	$scope.factures = [];
-	$scope.filters = {
-		payees: true,
-		arembourser: true,
-		apayer: true,
-		enattente: true,
-	};
+angular.module('picsousApp').controller('FacturesRecuesCtrl', function ($http, APP_URL, $scope, tva, message, NgTableParams, dateWrapper, objectStates, casConnectionCheck) {
+  $scope.cas = casConnectionCheck
+  $scope.facturesUrl = APP_URL + '/generate/factures'
+  $scope.tva = tva
+  $scope.factures = []
+  $scope.filters = {
+    payees: true,
+    arembourser: true,
+    apayer: true,
+    enattente: true
+  }
 
-	function checkCategory(cat) {
-		if (cat.code.length > 1) {
-			message.error('Le code ne doit pas faire plus d\'un caractère.');
-			return false;
-		}
-		return true;
-	};
+  function checkCategory (cat) {
+    if (cat.code.length > 1) {
+      message.error('Le code ne doit pas faire plus d\'un caractère.')
+      return false
+    }
+    return true
+  };
 
-	$http({
-		method: 'GET',
-		url: APP_URL + '/facturesRecues/'
-	}).then(function(response) {
-		$scope.factures = response.data;
-	});
+  $http({
+    method: 'GET',
+    url: APP_URL + '/facturesRecues/'
+  }).then(function (response) {
+    $scope.factures = response.data
+  })
 
-	$scope.getFactures = function() {
-		return $scope.factures.filter(function(p) {
-			if ($scope.filters.payees && p.etat === 'P') {
-				return true;
-			}
-			if ($scope.filters.arembourser && p.etat === 'R') {
-				return true;
-			}
-			if ($scope.filters.apayer && p.etat === 'D') {
-				return true;
-			}
-			if ($scope.filters.enattente && p.etat === 'E') {
-				return true;
-			}
-			return false;
-		});
+  $scope.getFactures = function () {
+    return $scope.factures.filter(function (p) {
+      if ($scope.filters.payees && p.etat === 'P') {
+        return true
+      }
+      if ($scope.filters.arembourser && p.etat === 'R') {
+        return true
+      }
+      if ($scope.filters.apayer && p.etat === 'D') {
+        return true
+      }
+      if ($scope.filters.enattente && p.etat === 'E') {
+        return true
+      }
+      return false
+    })
 	};
 
 	$scope.getCategoryCode = function(id) {

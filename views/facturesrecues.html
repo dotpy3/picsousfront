@@ -215,3 +215,7 @@
 		<p ng-show="factures.length === 0">Aucune facture.</p>
 	</div>
 </div>
+<div ng-show="cas.isAdmin()" align="center">
+	<hr>
+	<p><a href="{{ facturesUrl }}">Télécharger au format Excel</a></p>
+</div>
