@@ -2,7 +2,7 @@
 
 angular.module('picsousApp').controller('FacturesRecuesCtrl', function ($http, APP_URL, $scope, tva, message, NgTableParams, dateWrapper, objectStates, casConnectionCheck) {
   $scope.cas = casConnectionCheck
-  $scope.facturesUrl = APP_URL + '/generate/factures'
+  $scope.facturesUrl = APP_URL + '/generate/factures?val=' + (new Date().getTime())
   $scope.tva = tva
   $scope.factures = []
   $scope.filters = {

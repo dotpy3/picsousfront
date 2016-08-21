@@ -4,7 +4,7 @@
 
 angular.module('picsousApp').controller('ChequesCtrl', function ($scope, casConnectionCheck, APP_URL, $http, objectStates, message, serverGetter) {
   $scope.cas = casConnectionCheck
-  $scope.chequesUrl = APP_URL + '/generate/cheques'
+  $scope.chequesUrl = APP_URL + '/generate/cheques?val=' + (new Date().getTime())
 	var loadCheques = function() {
 		serverGetter.chequesGetter().then(function(response) {
 			$scope.cheques = response.data;
