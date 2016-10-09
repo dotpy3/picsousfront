@@ -34,6 +34,24 @@
 							<option value="C">Caution</option>
 						</select>
 					</div>
+					<div class="form-group col-md-6">
+						<label>Date d'émission</label>
+						<p class="input-group">
+							<input type="text" class="form-control" uib-datepicker-popup datepicker-options="dateOptions" close-text="Fermer" is-open="popupOpen[0]" ng-required="true" ng-model="newCheque.date_emission" placeholder="AAAA-MM-JJ" />
+							<span class="input-group-btn">
+											<button type="button" class="btn btn-default" ng-click="openPopup(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+										</span>
+						</p>
+					</div>
+					<div class="form-group col-md-6">
+						<label>Date d'encaissement</label>
+						<p class="input-group">
+							<input type="text" class="form-control" uib-datepicker-popup datepicker-options="dateOptions" close-text="Fermer" is-open="popupOpen[1]" ng-required="true" ng-model="newCheque.date_encaissement" placeholder="AAAA-MM-JJ" />
+							<span class="input-group-btn">
+											<button type="button" class="btn btn-default" ng-click="openPopup(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+										</span>
+						</p>
+					</div>
 					<div class="form-group col-md-12">
 						<label>Commentaire</label>
 						<textarea rows="3" ng-model="newCheque.commentaire" class="form-control"></textarea>
@@ -49,6 +67,8 @@
 					<th>Destinataire</th>
 					<th>Valeur</th>
 					<th>État</th>
+					<th>Date d'émission</th>
+					<th>Date d'encaissement</th>
 					<th>Facture</th>
 				</tr>
 			</thead>
@@ -68,6 +88,8 @@
 						<button class="btn btn-sm btn-primary" ng-disabled="cheque.quicksave" ng-click="quickChange(cheque)"><span class="glyphicon glyphicon-ok"></span></button>
 					</span>
 				</td>
+				<td>{{(cheque.date_emission | date) || '--'}}</td>
+				<td>{{(cheque.date_encaissement | date) || '--'}}</td>
 				<td><a href="#/facturesrecues/{{cheque.facturerecue}}" ng-show="cheque.facturerecue">Détails</a><span ng-hide="cheque.facturerecue">--</span></td>
 			</tr>
 		</table>
@@ -98,6 +120,10 @@
 						<option value="A">Annulé</option>
 						<option value="C">Caution</option>
 					</select>
+				</div>
+				<div class="form-group">
+					<label>Commentaire</label>
+					<textarea rows="3" ng-model="modifiedCheque.commentaire" class="form-control"></textarea>
 				</div>
 				<button class="btn btn-primary" ng-disabled="sendingChequeModification" ng-click="sendChequeModification()">Sauvegarder</button> <button class="btn btn-danger" ng-click="deleteCheque(modifiedCheque)">Supprimer le chèque</button>
 			</div>

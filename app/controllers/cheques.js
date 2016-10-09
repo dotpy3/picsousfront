@@ -71,17 +71,44 @@ angular.module('picsousApp').controller('ChequesCtrl', function ($scope, casConn
 	};
 
 	$scope.addCheque = function() {
+		var newCheque = $scope.newCheque
+		if (newCheque.date_emission) newCheque.date_emission = dateFormat(newCheque.date_emission)
+		if (newCheque.date_encaissement) newCheque.date_encaissement = dateFormat(newCheque.date_encaissement)
 		$http({
 			method: 'POST',
 			url: APP_URL + '/cheques/',
-			data: $scope.newCheque
+			data: newCheque
 		}).then(function(response) {
-			$scope.cheques.push(response.data);
-			$scope.newCheque = {};
-			$scope.addingCheque = false;
-			message.success('Chèque bien ajouté !');
+			$scope.cheques.push(response.data)
+			$scope.newCheque = {}
+			$scope.addingCheque = false
+			message.success('Chèque bien ajouté !')
 		})
 	};
+
+	function pad(number) {
+		if (number < 10) {
+			return '0' + number
+		}
+		return number
+	}
+
+	var dateFormat = function (givenDate) {
+		var m = givenDate.getMonth()
+		return givenDate.getFullYear() + '-' + pad(givenDate.getUTCMonth() + 1) + '-' + pad(givenDate.getUTCDate())
+	}
+
+	$scope.dateOptions = {
+		initDate: new Date(),
+		dateDisabled: false,
+		formatYear: 'yy'
+	}
+
+	$scope.popupOpen = [false, false]
+
+	$scope.openPopup = function (i) {
+		$scope.popupOpen[i] = true
+	}
 
 	$scope.getChequeState = objectStates.chequeState;
 	$scope.getChequeStateLabel = objectStates.chequeStateLabel;
