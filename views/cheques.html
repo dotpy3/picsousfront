@@ -121,6 +121,24 @@
 						<option value="C">Caution</option>
 					</select>
 				</div>
+					<div class="form-group">
+						<label>Date d'émission</label>
+						<p class="input-group">
+							<input type="text" class="form-control" uib-datepicker-popup datepicker-options="dateOptions" close-text="Fermer" is-open="popupOpen[2]" ng-required="true" ng-model="modifiedCheque.date_emission" placeholder="AAAA-MM-JJ" />
+							<span class="input-group-btn">
+											<button type="button" class="btn btn-default" ng-click="openPopup(2)"><i class="glyphicon glyphicon-calendar"></i></button>
+										</span>
+						</p>
+					</div>
+					<div class="form-group">
+						<label>Date d'encaissement</label>
+						<p class="input-group">
+							<input type="text" class="form-control" uib-datepicker-popup datepicker-options="dateOptions" close-text="Fermer" is-open="popupOpen[3]" ng-required="true" ng-model="modifiedCheque.date_encaissement" placeholder="AAAA-MM-JJ" />
+							<span class="input-group-btn">
+											<button type="button" class="btn btn-default" ng-click="openPopup(3)"><i class="glyphicon glyphicon-calendar"></i></button>
+										</span>
+						</p>
+					</div>
 				<div class="form-group">
 					<label>Commentaire</label>
 					<textarea rows="3" ng-model="modifiedCheque.commentaire" class="form-control"></textarea>
