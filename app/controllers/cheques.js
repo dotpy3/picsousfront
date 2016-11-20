@@ -36,10 +36,13 @@ angular.module('picsousApp').controller('ChequesCtrl', function ($scope, casConn
 
 	$scope.sendChequeModification = function() {
 		$scope.sendingChequeModification = true;
+		var newCheque = $scope.modifiedCheque
+		if (newCheque.date_emission) newCheque.date_emission = dateFormat(newCheque.date_emission)
+		if (newCheque.date_encaissement) newCheque.date_encaissement = dateFormat(newCheque.date_encaissement)
 		$http({
 			method: 'PUT',
 			url: APP_URL + '/cheques/' + $scope.modifiedCheque.id + '/',
-			data: $scope.modifiedCheque,
+			data: newCheque,
 		}).then(function(response) {
 			angular.copy(response.data, $scope.chequeInModification);
 			$scope.chequeInModification = null;
