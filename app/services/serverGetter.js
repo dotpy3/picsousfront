@@ -62,6 +62,9 @@ angular.module('picsousApp').factory('serverGetter', function(APP_URL, $http, se
 		permGetter: genericRESTUnitGetter('perms', true),
 		// Permet d'obtenir les informations de la perm 'id'
 
+		reversementsGetter: genericRESTListGetter('reversements', true),
+		// Permet d'obtenir la liste des reversements
+
 		categoriesGetter: genericRESTListGetter('categoriesFactureRecue'),
 		// Permet d'obtenir la liste des catégories de factures reçues
 

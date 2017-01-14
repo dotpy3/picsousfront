@@ -63,6 +63,7 @@ angular.module('picsousApp').factory('semester', function($http, $route, APP_URL
         currentSemester: function() {
             return currentSemester;
         },
+        currentCredit: function () { return  $http({ method: 'GET', url: APP_URL + '/getCurrentCredit' }) },
         currentSemesterName: function(id) { return semesterNameById(id); },
     };
 });

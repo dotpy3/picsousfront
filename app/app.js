@@ -15,6 +15,14 @@ angular.module('picsousApp', [
 			templateUrl: 'views/home.html',
 			controller: 'HomeCtrl',
 			reloadOnSearch: false,
+		}).when('/bank', {
+			templateUrl: 'views/bank.html',
+			controller: 'BankSimulationCtrl',
+			reloadOnSearch: false,
+		}).when('/backoffice', {
+			templateUrl: 'views/backoffice.html',
+			controller: 'BackofficeCtrl',
+			reloadOnSearch: false,
 		}).when('/addperm', {
 			templateUrl: 'views/addperm.html',
 			controller: 'AddPermCtrl',
@@ -54,10 +62,6 @@ angular.module('picsousApp', [
 		}).when('/stats', {
 			templateUrl: 'views/stats.html',
 			controller: 'StatsCtrl',
-			reloadOnSearch: false,
-		}).when('/backoffice', {
-			templateUrl: 'views/backoffice.html',
-			controller: 'BackofficeCtrl',
 			reloadOnSearch: false,
 		}).otherwise({
 			redirectTo: '/'
