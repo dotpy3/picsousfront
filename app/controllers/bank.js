@@ -51,6 +51,7 @@ angular.module('picsousApp').controller('BankSimulationCtrl', function ($scope, 
   }
 
   $scope.sumReversements = function (rList) {
+    if (!rList.length) return 0
     var t =  rList.map(function (r) { return r.prix }).reduce(function (a, b) { return a + b })
     console.log(t)
     return t
