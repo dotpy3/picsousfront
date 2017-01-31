@@ -33,12 +33,16 @@ angular.module('picsousApp').controller('BankSimulationCtrl', function ($scope, 
     r.prix = (typeof r.prix === 'number' ? r.prix : parseFloat(r.prix.replace(',', '.')))
     let newReversement = !r.id
     let reversement = angular.copy(r)
-    reversement.date_effectue = dateWrapper.DateToStringDate(reversement.date_effectue)
+    var dateEffectue = dateWrapper.DateToStringDate(reversement.date_effectue)
     r.saving = true
     $http({
       method: 'POST',
       url: APP_URL + '/reversements/',
-      data: reversement
+      data: {
+        id: reversement.id,
+        prix: reversement.prix,
+        date_effectue: dateEffectue
+      }
     }).then(function (response) {
       delete r.saving
       if (newReversement) {
@@ -48,6 +52,11 @@ angular.module('picsousApp').controller('BankSimulationCtrl', function ($scope, 
     }, function () {
       delete r.saving
     })
+  }
+
+  $scope.editReversement = function (r) {
+    r.old = angular.copy(r)
+    r.editing = true
   }
 
   $scope.sumReversements = function (rList) {

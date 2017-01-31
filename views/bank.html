@@ -35,7 +35,7 @@
       <tr ng-repeat="reversement in reversements">
         <td ng-hide="reversement.editing">{{ reversement.prix }} €</td>
         <td ng-hide="reversement.editing">{{ reversement.date_effectue | date }}</td>
-        <td ng-hide="reversement.editing"><a href=""><i class="glyphicon glyphicon-pencil"></i></a></td>
+        <td ng-hide="reversement.editing"><a href="" ng-click="editReversement(reversement)"><i class="glyphicon glyphicon-pencil"></i></a></td>
         <td ng-show="reversement.editing"><input type="text" ng-disabled="reversement.saving" class="form-control" ng-model="reversement.prix" /></td>
         <td ng-show="reversement.editing"><date-input ng-model="reversement.date_effectue"></date-input></td>
         <td ng-show="reversement.editing"><button ng-click="saveReversement(reversement)" class="btn btn-primary">Sauver</button> <button class="btn btn-danger">Annuler</button></td>
