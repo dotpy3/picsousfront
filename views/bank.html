@@ -57,23 +57,23 @@
       </thead>
       <tr>
         <td>Solde au début du semestre</td>
-        <td>{{ solde }} €</td>
+        <td>{{ solde.toFixed(2) }} €</td>
       </tr>
       <tr>
         <td>Somme des reversements</td>
-        <td>{{ sumReversements(reversements) }} €</td>
+        <td>{{ sumReversements(reversements).toFixed(2) }} €</td>
       </tr>
       <tr>
         <td>Factures reçues payées</td>
-        <td>{{ - sumReceivedBills }} €</td>
+        <td>{{ - sumReceivedBills.toFixed(2) }} €</td>
       </tr>
       <tr>
         <td>Factures émises encaissées</td>
-        <td>{{ sumOutvoicedBills }} €</td>
+        <td>{{ sumOutvoicedBills.toFixed(2) }} €</td>
       </tr>
       <tr>
         <td><strong>Solde théorique sur le compte actuellement</strong></td>
-        <td><strong>{{ solde + sumReversements(reversements) - sumReceivedBills + sumOutvoicedBills }} €</strong></td>
+        <td><strong>{{ (solde + sumReversements(reversements) - sumReceivedBills + sumOutvoicedBills).toFixed(2) }} €</strong></td>
       </tr>
     </table>
   </div>
