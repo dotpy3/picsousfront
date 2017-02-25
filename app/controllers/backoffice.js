@@ -98,7 +98,7 @@ angular.module('picsousApp').controller('BackofficeCtrl', function($http, $scope
     $scope.giveRight = function(user, right) {
         user.changingRight = true;
         $http({ method: 'PUT', url: APP_URL + '/userright/' + user.id + '/', data: {
-            id: user.id, right: right, login: user.login
+            id: user.id, right: right
         }}).then(function(response) {
             user.right = response.data.right;
             user.changingRight = false;
